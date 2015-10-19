@@ -10,7 +10,6 @@ $string['pluginname'] = 'Disk Quota';
 $string['disk_quota:addinstance'] = 'Add a new Disk Quota block';
 $string['disk_quota:myaddinstance'] = 'Add a new Disk Quota block to My Home (aka Dashboard)';
 $string['err_cannot_uninstall_plugin'] = 'Uninstalling this plugin is not possible';
-$string['mail_nearing_quota_title'] = 'Moodle site is nearing quota limit';
 $string['quota_used'] = '{$a->used} of {$a->quota} GB used';
 
 // Settings strings
@@ -34,15 +33,16 @@ $string['support_telephone'] = 'Support telephone';
 $string['support_telephone_desc'] = 'Support telephone number for urgent contact';
 $string['support_email'] = 'Support email';
 $string['support_email_desc'] = 'Support email address';
-$string['near_quota_warn_email_frequency'] = 'Near quota warn frequency';
-$string['near_quota_warn_email_frequency_desc'] = 'How often mails will be sent when the site is nearing the quota';
+$string['nearing_quota_warn_email_frequency'] = 'Near quota warn frequency';
+$string['nearing_quota_warn_email_frequency_desc'] = 'How often mails will be sent when the site is nearing the quota';
 $string['over_quota_warn_email_frequency'] = 'Over quota warn frequency';
 $string['over_quota_warn_email_frequency_desc'] = 'How often mails will be sent when the site has exceeded the quota';
 
 // Email strings
+$string['mail_nearing_quota_subject'] = 'Moodle site is nearing quota limit';
 $string['mail_nearing_quota_body'] =
 'Your Moodle site {$a->url} is currently using {$a->used} GB
-of the available {$a->quota} GB space for files.
+of the allocated {$a->quota} GB space for files.
 
 Now would be a good time to order more space, or to reduce
 your space used.
@@ -50,14 +50,14 @@ your space used.
 If your Moodle goes too far over the disk space limit, it will
 be automatically put into maintenance mode and will be unavailable
 for users.
-';
-$string['mail_signature'] = 'With friendly greetings,
-The Liip Elearning Team';
 
-$string['mail_over_quota_title'] = 'Moodle site has exceeded quota limit';
+{$a->signature}
+';
+
+$string['mail_over_quota_subject'] = 'Moodle site has exceeded quota limit';
 $string['mail_over_quota_body'] =
 'Your Moodle site {$a->url} is currently using {$a->used} GB
-of the available {$a->quota} GB space for files.
+of the allocated {$a->quota} GB space for files.
 
 Please take immediate action to remedy this situation.  You can
 either order more disk space for your Moodle, or reduce it\'s disk
@@ -66,12 +66,14 @@ usage.
 If your Moodle goes too far over the disk space limit, it will
 be automatically put into maintenance mode and will be unavailable
 for users.
+
+{$a->signature}
 ';
 
-$string['mail_site_blocked'] = 'Important: Moodle site has been disabled due to excessive disk usage';
-$string['mail_over_quota_body'] =
+$string['mail_site_blocked_subject'] = 'Important: Moodle site has been disabled due to excessive disk usage';
+$string['mail_site_blocked_body'] =
 'Your Moodle site {$a->url} is currently using {$a->used} GB
-of the available {$a->quota} GB space for files.
+of the allocated {$a->quota} GB space for files.
 
 In order to prevent unavailability for other customers, we have
 unfortunately been forced to disable your Moodle site.  This has
@@ -79,6 +81,8 @@ happened automatically, and most likely after previous warning
 emails.
 
 Please contact us immediately so that we can find a solution.
+
+{$a->signature}
 ';
 
 $string['mail_signature'] = 'With friendly greetings,

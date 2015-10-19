@@ -50,8 +50,8 @@ if ($ADMIN->fulltree) {
 
     $settings->add(new admin_setting_configduration(
         'block_disk_quota/near_quota_warn_frequency',
-        get_string('near_quota_warn_email_frequency', 'block_disk_quota'),
-        get_string('near_quota_warn_email_frequency_desc', 'block_disk_quota'),
+        get_string('nearing_quota_warn_email_frequency', 'block_disk_quota'),
+        get_string('nearing_quota_warn_email_frequency_desc', 'block_disk_quota'),
         14
     ));
 

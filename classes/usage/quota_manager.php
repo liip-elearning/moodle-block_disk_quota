@@ -71,6 +71,9 @@ class quota_manager {
      */
     protected function fake_user_from_bare_email_address($email) {
         $user = new \stdClass;
+        foreach(get_all_user_name_fields() as $field => $ignore) {
+            $user->$field = '';
+        }
         $user->firstname = explode('@', $email)[0];
         $user->lastname = '.';
         $user->email = $email;
@@ -79,32 +82,143 @@ class quota_manager {
         return $user;
     }
 
+    /**
+     * Send notification that the site has been blocked.
+     *
+     * @param $used
+     * @param $settings
+     */
     public function notify_site_blocked($used, $settings) {
+        $this->notify_if_necessary('site_blocked', $used, $settings);
+    }
+
+    /**
+     * Send notification that the site is over quoata, if a notification has not recently been sent.
+     *
+     * @param $used
+     * @param $settings
+     */
+    public function notify_over_quota($used, $settings) {
+        $this->notify_if_necessary('over_quota', $used, $settings);
+    }
+
+    /**
+     * Send notification that the site is nearing the quota limit, if a notification has not recently been sent.
+     * @param $used
+     * @param $settings
+     */
+    public function notify_near_quota($used, $settings) {
+        $this->notify_if_necessary('nearing_quota', $used, $settings);
+    }
+
+    /**
+     * Sends notification if necessary.  If notification is sent, the send date
+     * is recorded in the block settings.
+     *
+     * @param $notificationtype
+     * @param $used
+     * @param $settings
+     */
+    protected function notify_if_necessary($notificationtype, $used, $settings) {
+        if ($this->notification_needs_sending($notificationtype, $settings)) {
+            $this->send_notification_mails(
+                $notificationtype,
+                $this->notification_users($settings),
+                $this->standard_mail_values($used, $settings),
+                $settings
+            );
+            $this->mark_notification_sent($notificationtype, $settings);
+        }
+    }
+
+    /**
+     * Sends notification mails to users.
+     *
+     * The notification mails have a consistent settings / language string naming convention; that fact
+     * is used to generalize the sending of mails.
+     *
+     * @param $mail_type
+     * @param $users
+     * @param $mailvalues
+     * @param $settings
+     */
+    public function send_notification_mails($mail_type, $users, $mailvalues, $settings) {
         global $CFG;
-        $users = $this->notification_users($settings);
         $noreply = \core_user::get_noreply_user();
-        $subject = new \lang_string('mail_site_blocked', 'block_disk_quota');
-        $a = new \stdClass;
-        $a->url = $CFG->wwwroot;
-        $a->used = round(floatval($used), 3);
-        $a->quota = $settings->quota_gb;
-        $a->supportemail = "TODO: add support contact email to block config";
-        $a->supporttelephone = "TODO: add support contact telephone to block config";
-        $body = new \lang_string('mail_over_quota_body', 'block_disk_quota', $a);
+        $subjectkey = 'mail_' . $mail_type . '_subject';
+        $bodykey = 'mail_' . $mail_type . '_body';
+        $subject = new \lang_string($subjectkey, 'block_disk_quota');
         foreach ($users as $user) {
             $lang = empty($user->lang) ? $CFG->lang : $user->lang;
+            $mailvalues->signature = $this->mail_signature($lang, $settings);
+            $body = new \lang_string($bodykey, 'block_disk_quota', $mailvalues);
             email_to_user($user, $noreply, $subject->out($lang), $body->out($lang));
         }
     }
 
-    public function notify_over_quota($used, $settings) {
-        // TODO: send mail (once a day)
-        // set config value with time last sent
+    /**
+     * Returns true if the notification should be sent.
+     *
+     * @param $notificationtype
+     * @param $settings
+     * @return bool
+     */
+    protected function notification_needs_sending($notificationtype, $settings) {
+        if ($notificationtype == 'site_blocked') {
+            return true;
+        }
+
+        $lastsentattribute = $this->notification_last_sent_attribute($notificationtype);
+        if (empty($settings->$lastsentattribute)) {
+            // Value has never been set
+            return true;
+        }
+
+        $frequencyattribute = $this->notification_frequency_attribute($notificationtype);
+        $now = time();
+        $duration = intval($settings->$frequencyattribute) * 24 * 60 * 60;
+        $lastsent = intval($settings->$lastsentattribute);
+
+        return $lastsent + $duration <= $now;
     }
 
-    public function notify_near_quota($used, $settings) {
-        // TODO: send mail (once every 14 days or so)
-        // set config value with time last sent
+    protected function notification_last_sent_attribute($notificationtype) {
+        return 'notification_' . $notificationtype . '_sent_date';
+    }
+
+    protected function notification_frequency_attribute($notificationtype) {
+        return $notificationtype . '_warn_email_frequency';
+    }
+
+    /**
+     * Marks the notification as having been sent at the current time.
+     *
+     * Note: this also updates the last-sent value in $settings.
+     *
+     * @param $notificationtype
+     * @param $settings
+     */
+    protected function mark_notification_sent($notificationtype, $settings) {
+        $lastsentattribute = $this->notification_last_sent_attribute($notificationtype);
+        $settings->$lastsentattribute = time();
+        set_config($lastsentattribute, $settings->$lastsentattribute, 'block_disk_quota');
+    }
+
+    protected function standard_mail_values($spaceused, $settings) {
+        global $CFG;
+        $a = new \stdClass;
+        $a->url = $CFG->wwwroot;
+        $a->used = round(floatval($spaceused), 3);
+        $a->quota = $settings->quota_gb;
+        return $a;
+    }
+
+    protected function mail_signature($lang, $settings) {
+        $a = new \stdClass;
+        $a->supportemail = $settings->support_email;
+        $a->supporttelephone = $settings->support_telephone;
+        $signature = new \lang_string('mail_signature', 'block_disk_quota', $a);
+        return $signature->out($lang);
     }
 
     /**
