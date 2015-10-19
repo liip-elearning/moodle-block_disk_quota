@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="blocks/disk_quota/db" VERSION="20150717" COMMENT="XMLDB file for Moodle blocks/disk_quota"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
+>
+  <TABLES>
+    <TABLE NAME="block_disk_quota_measurement" COMMENT="Records the measurement of GBs used and the quota at that time.">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="historic" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Only one record per day is kept for older history; if this is an older record historic = 1."/>
+        <FIELD NAME="timemeasured" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="usedgb" TYPE="number" LENGTH="16" NOTNULL="true" DEFAULT="0" SEQUENCE="false" DECIMALS="3"/>
+        <FIELD NAME="quotagb" TYPE="number" LENGTH="16" NOTNULL="true" DEFAULT="50" SEQUENCE="false" DECIMALS="3"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="historic" UNIQUE="false" FIELDS="historic"/>
+        <INDEX NAME="measured" UNIQUE="false" FIELDS="timemeasured"/>
+      </INDEXES>
+    </TABLE>
+  </TABLES>
+</XMLDB>
