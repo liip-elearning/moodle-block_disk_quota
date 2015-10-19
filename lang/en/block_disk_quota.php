@@ -9,6 +9,8 @@
 $string['pluginname'] = 'Disk Quota';
 $string['disk_quota:addinstance'] = 'Add a new Disk Quota block';
 $string['disk_quota:myaddinstance'] = 'Add a new Disk Quota block to My Home (aka Dashboard)';
+$string['disk_quota:viewblock'] = 'View a disk quota block';
+$string['disk_quota:viewusage'] = 'View disk quota details page';
 $string['err_cannot_uninstall_plugin'] = 'Uninstalling this plugin is not possible';
 $string['quota_used'] = '{$a->used} of {$a->quota} GB used';
 $string['gigabytes_used'] = 'GB used';

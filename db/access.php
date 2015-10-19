@@ -23,4 +23,11 @@ $capabilities = array(
         'archetypes' => array(
         ),
     ),
+
+    'block/disk_quota:viewblock' => array(
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'archetypes' => array(
+        ),
+    ),
 );

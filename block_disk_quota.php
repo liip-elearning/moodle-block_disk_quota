@@ -114,6 +114,12 @@ class block_disk_quota extends block_base {
         }
     }
 
+    /**
+     * Controls whether or not it is visible to the current user.
+     */
+    function is_empty() {
+        return !has_capability('block/disk_quota:viewblock', context_system::instance());
+    }
 
     function has_config() {
         return true;
