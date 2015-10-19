@@ -75,9 +75,9 @@ $string['mail_site_blocked_body'] =
 'Your Moodle site {$a->url} is currently using {$a->used} GB
 of the allocated {$a->quota} GB space for files.
 
-In order to prevent unavailability for other customers, we have
-unfortunately been forced to disable your Moodle site.  This has
-happened automatically, and most likely after previous warning
+In order to ensure continued availability for other customers, we
+have unfortunately been forced to disable your Moodle site.  This
+has happened automatically, and most likely after previous warning
 emails.
 
 Please contact us immediately so that we can find a solution.
