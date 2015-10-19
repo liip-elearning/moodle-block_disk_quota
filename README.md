@@ -66,6 +66,10 @@ of whether or not there are any block instances by navigating to the
 Note that no block instance needs to exist for the cron job, warning emails,
 and automatic site blocking to work.
 
+## Compatibility
+This plugin should work on Moodle 2.7+.
+The usage detail page may not work if using a non-PosgreSQL database.
+
 ## TODO
 * Nicer visual indication of current space used.
 * Handle local disk usage of repositories other than those tracked in the Moodle database.
