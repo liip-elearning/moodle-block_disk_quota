@@ -29,8 +29,8 @@ use block_disk_quota\usage\quota_manager;
  *         'do_email_admins' => true,  // If true, all warning / site blocked mails will be sent to all admins
  *         'support_telephone' => '555 1234',
  *         'support_email' => 'support@example.com',
- *         'nearing_quota_warn_email_frequency' => 13,  // How often, in days, a warning mail will be sent when nearing quota
- *         'over_quota_warn_email_frequency' => 3,   // How often, in days, a warning mail will be sent when quota exceeded
+ *         'nearing_quota_warn_email_frequency' => 14 * 24 * 60 * 60,  // How often, in seconds, a warning mail will be sent when nearing quota
+ *         'over_quota_warn_email_frequency' => 3 * 24 * 60 * 60,   // How often, in seconds, a warning mail will be sent when quota exceeded
  *     )
  * );
  *

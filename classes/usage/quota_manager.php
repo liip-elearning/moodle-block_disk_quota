@@ -3,11 +3,20 @@
 namespace block_disk_quota\usage;
 
 class quota_manager {
-    public function get_total_disk_space_used() {
+
+    protected $spaceusage;
+
+    function __construct() {
         // TODO: determine what collectors other than internal_space_usage should be used.
         $collectors = array(new internal_space_usage());
-        $usage = new space_usage($collectors);
-        return $usage->total_used();
+        $this->spaceusage = new space_usage($collectors);
+    }
+    public function get_total_disk_space_used() {
+        return $this->spaceusage->total_used();
+    }
+
+    public function get_usage_details() {
+        return $this->spaceusage->usage_details();
     }
 
     public function record_space_used($used, $quota) {

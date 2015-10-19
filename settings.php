@@ -49,17 +49,17 @@ if ($ADMIN->fulltree) {
         255));
 
     $settings->add(new admin_setting_configduration(
-        'block_disk_quota/near_quota_warn_frequency',
+        'block_disk_quota/nearing_quota_warn_email_frequency',
         get_string('nearing_quota_warn_email_frequency', 'block_disk_quota'),
         get_string('nearing_quota_warn_email_frequency_desc', 'block_disk_quota'),
-        14
+        14 * 24 * 60 * 60
     ));
 
     $settings->add(new admin_setting_configduration(
-        'block_disk_quota/over_quota_warn_frequency',
+        'block_disk_quota/over_quota_warn_email_frequency',
         get_string('over_quota_warn_email_frequency', 'block_disk_quota'),
         get_string('over_quota_warn_email_frequency_desc', 'block_disk_quota'),
-        3
+        3 * 24 * 60 * 60
     ));
 
     $settings->add(new admin_setting_configtext(

@@ -30,14 +30,13 @@ class space_usage {
     }
 
     public function usage_details() {
-        // TODO: test if working:
         $details = array (
             'total_gb' => 0.0,
             'breakdown' => array(
                 'unknown' => 0.0,
             )
         );
-        $all_breakdown = $details['breakdown'];
+        $allbreakdown = $details['breakdown'];
 
         // Sum up the values from all collectors:
         foreach ($this->usagecollectors as $collector) {
@@ -47,12 +46,13 @@ class space_usage {
             $breakdown = $detail['breakdown'];
             foreach ($breakdown as $name => $value) {
                 if (isset($all_breakdown[$name])) {
-                    $all_breakdown[$name] += $value;
+                    $allbreakdown[$name] += $value;
                 } else {
-                    $all_breakdown[$name] = $value;
+                    $allbreakdown[$name] = $value;
                 }
             }
         }
+        $details['breakdown'] = $allbreakdown;
         return $details;
     }
 }
