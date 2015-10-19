@@ -27,6 +27,4 @@ defined('MOODLE_INTERNAL') || die();
 $plugin->version   = 2015101900;        // The current plugin version (Date: YYYYMMDDXX)
 $plugin->requires  = 2014051200;        // minimum: Moodle 2.7
 $plugin->component = 'block_disk_quota'; // Full name of the plugin (used for diagnostics)
-#$plugin->cron      = 600;           // Cron interval: 10 minutes
-# TODO: use 10 minutes for real life
-$plugin->cron      = 1;           // Cron interval: 1 second
+$plugin->cron      = 600;           // Cron interval: 10 minutes
