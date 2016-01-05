@@ -47,6 +47,10 @@ $string['mail_nearing_quota_body'] =
 'Your Moodle site {$a->url} is currently using {$a->used} GB
 of the allocated {$a->quota} GB space for files.
 
+If you need more disk space, please contact us asap to
+upgrade. Alternatively, we suggest that you reduce your disk
+usage by deleting unused data.
+
 Now would be a good time to order more space, or to reduce
 your space used.
 
@@ -62,9 +66,8 @@ $string['mail_over_quota_body'] =
 'Your Moodle site {$a->url} is currently using {$a->used} GB
 of the allocated {$a->quota} GB space for files.
 
-Please take immediate action to remedy this situation.  You can
-either order more disk space for your Moodle, or reduce it\'s disk
-usage.
+Please contact us immediately to upgrade. You may either order
+more disk space, or reduce disk usage by deleting unused data.
 
 If your Moodle goes too far over the disk space limit, it will
 be automatically put into maintenance mode and will be unavailable
@@ -78,12 +81,12 @@ $string['mail_site_blocked_body'] =
 'Your Moodle site {$a->url} is currently using {$a->used} GB
 of the allocated {$a->quota} GB space for files.
 
-In order to ensure continued availability for other customers, we
-have unfortunately been forced to disable your Moodle site.  This
-has happened automatically, and most likely after previous warning
-emails.
+You have received several warnings mails requesting you to upgrade
+your Moodle hosting plan. With no feedback from your side, your
+Moodle instance has been deactivated automatically in order to avoid
+impact on our infrastructure and other hosted projects.
 
-Please contact us immediately so that we can find a solution.
+Please contact us immediately to find a solution.
 
 {$a->signature}
 ';

@@ -38,40 +38,62 @@ $string['over_quota_warn_email_frequency'] = 'Fréquence des notifications de qu
 $string['over_quota_warn_email_frequency_desc'] = 'A quelle fréquence les mails de notification seront-ils envoyés lorsque l\'espace occupé par le site dépasse son quota';
 
 // Email strings
-$string['mail_nearing_quota_subject'] = 'Le site Moodle approche son quota limite';
+$string['mail_nearing_quota_subject'] = 'Votre instance Moodle approche de son quota limite';
 $string['mail_nearing_quota_body'] =
-'Votre instance Moodle {$a->url} utilise actuellement {$a->used} GB des {$a->quota} alloués pour ses données.
+'Votre instance Moodle {$a->url} utilise actuellement {$a->used} GB
+des {$a->quota} alloués pour ses données.
 
-Si vous avez besoin de plus d\'espace, veuillez en commander. Autrement il vous faudra réduire l\'espace disque utilisé en supprimant du contenu.
+Si vous avez besoin de plus d\'espace, nous vous prions de commander
+une augmentation de la capacité de stockage. Nous vous suggérons
+d’éventuellement réduire l\'espace disque utilisé en supprimant des
+données inutiles.
 
-Si l\'espace disque utilisé par votre instance Moodle dépasse la limite contractuelle, elle va être mise automatiquement en maintenance et ne sera plus disponible pour les utilisateurs.
+Lorsque l\'espace disque utilisé par votre instance Moodle dépasse la limite
+contractuelle d\'une trop grande marge, automatiquement celle-ci n’est plus
+disponible pour les utilisateurs. Un message automatique de mise en maintenance
+est activé.
+
 {$a->signature}
 ';
 
 $string['mail_over_quota_subject'] = 'Le site Moodle a dépassé son quota limite';
 $string['mail_over_quota_body'] =
-'Votre instance Moodle {$a->url} utilise actuellement {$a->used} GB des {$a->quota} alloués pour ses données.
+'Votre instance Moodle {$a->url} utilise actuellement {$a->used} GB
+des {$a->quota} alloués pour ses données.
 
-Veuillez s\'il vous plaît prendre des mesures immédiates pour résoudre cette situation. Vous pouvez soit commander plus d\'espace disque, soit réduire l\'espace disque utilisé en supprimant des données.
+Pourriez vous nous contacter au plus vite pour résoudre cette situation.
+Il vous est possible, soit de commander plus d\'espace disque, soit de
+réduire l\'espace disque utilisé en supprimant des données.
 
-Si votre instance Moodle dépasse le quota limite d\'une trop grande marge, elle sera automatiquement mise en maintenance et ne sera plus disponible pour les utilisateurs.
+Lorsque l\'espace disque utilisé par votre instance Moodle dépasse la limite
+contractuelle d\'une trop grande marge, automatiquement celle-ci n’est plus
+disponible pour les utilisateurs. Un message automatique de mise en maintenance
+est activé.
+
+Veuillez nous contacter pour éviter cette situation, nous vous proposerons volontiers
+une mise à jour.
 
 {$a->signature}
 ';
 
-$string['mail_site_blocked_subject'] = 'Important: le site Moodle a été mis en maintenance';
+$string['mail_site_blocked_subject'] = 'Important: Votre instance Moodle est désactivée';
 $string['mail_site_blocked_body'] =
-'Votre instance Moodle {$a->url} utilise actuellement {$a->used} GB des {$a->quota} alloués pour ses données.
+'Votre instance Moodle {$a->url} utilise actuellement {$a->used} GB
+des {$a->quota} alloués pour ses données.
 
-Pour éviter que ce dépassement n\'aie un impact sur la qualité des services aux autres clients, nous avons été forcés de désactiver votre instance Moodle.
-Ceci est une mesure automatique, qui a normalement été activée après que vous ayez reçu des emails d\'avertissements sur la situation.
+Vous avez reçu plusieurs mails d\'avertissement vous demandant de nous
+contacter pour mettre à jour la capacité de stockage des données. Sans
+réponse de votre part, celle-ci a été désactivée automatiquement pour
+éviter d\'impacter la qualité de notre infrastructure et des autres
+projets hébergés.
 
-Veuillez nous contacter immédiatement pour que nous trouvions ensemble une solution.
+Pourriez vous nous contacter immédiatement afin de nous permettre de
+trouver ensemble une solution.
 
 {$a->signature}
 ';
 
-$string['mail_signature'] = 'Avec nos cordiales salutations,
+$string['mail_signature'] = 'Avec nos sincères salutations,
 La Team Elearning de Liip
 
 Contact:
