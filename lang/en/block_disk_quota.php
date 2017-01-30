@@ -16,6 +16,8 @@ $string['quota_used'] = '{$a->used} of {$a->quota} GB used';
 $string['gigabytes_used'] = 'GB used';
 
 // Settings strings
+$string['enabled'] = 'Enabled';
+$string['enabled_desc'] = 'Whether the disk quota check is enforced';
 $string['quota_gb'] = 'Disk Quota';
 $string['quota_gb_desc'] = 'Disk Quota in gigabytes';
 $string['warn_when_within_gb_of_limit'] = 'Warn when this near limit';

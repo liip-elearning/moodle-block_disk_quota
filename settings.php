@@ -16,6 +16,12 @@ if ($ADMIN->fulltree) {
     $gbstrings = array_map('strval', $gb);
     $gbchoices = array_combine($gbstrings, $gbstrings);
 
+    $settings->add(new admin_setting_configcheckbox(
+        'block_disk_quota/enabled',
+        get_string('enabled', 'block_disk_quota'),
+        get_string('enabled_desc', 'block_disk_quota'),
+        0));
+
     $settings->add(new admin_setting_configselect(
         'block_disk_quota/quota_gb',
         get_string('quota_gb', 'block_disk_quota'),

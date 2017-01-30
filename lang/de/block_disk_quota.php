@@ -16,6 +16,8 @@ $string['quota_used'] = '{$a->used} von {$a->quota} GB benutzt';
 $string['gigabytes_used'] = 'GB benutzt';
 
 // Settings strings
+$string['enabled'] = 'Aktivieren';
+$string['enabled_desc'] = 'Speicherplatz-Limite aktivieren';
 $string['quota_gb'] = 'Speicherplatz-Limite';
 $string['quota_gb_desc'] = 'Speicherplatz-Limite in Gigabyte';
 $string['warn_when_within_gb_of_limit'] = 'Warnen wenn in der Nähe des Limits';
