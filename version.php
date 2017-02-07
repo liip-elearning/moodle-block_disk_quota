@@ -1,5 +1,5 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+// This file is part of the blocks/disk_quota Moodle plugin
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -17,8 +17,9 @@
 /**
  * Version details
  *
- * @package    block_recent_activity
+ * @package    block_disk_quota
  * @copyright  1999 onwards Martin Dougiamas (http://dougiamas.com)
+ * @copyright  2015-2017 Liip AG
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -27,4 +28,4 @@ defined('MOODLE_INTERNAL') || die();
 $plugin->version   = 2015101900;        // The current plugin version (Date: YYYYMMDDXX)
 $plugin->requires  = 2014051200;        // minimum: Moodle 2.7
 $plugin->component = 'block_disk_quota'; // Full name of the plugin (used for diagnostics)
-$plugin->cron      = 600;           // Cron interval: 10 minutes
+$plugin->cron      = 600;           // Cron interval: 10 minutes.

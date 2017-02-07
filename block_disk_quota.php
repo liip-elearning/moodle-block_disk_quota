@@ -1,4 +1,19 @@
 <?php
+// This file is part of the blocks/disk_quota Moodle plugin
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
 /**
  * class block_disk_quota
  *
@@ -29,8 +44,10 @@ use block_disk_quota\usage\quota_manager;
  *         'do_email_admins' => true,  // If true, all warning / site blocked mails will be sent to all admins
  *         'support_telephone' => '555 1234',
  *         'support_email' => 'support@example.com',
- *         'nearing_quota_warn_email_frequency' => 14 * 24 * 60 * 60,  // How often, in seconds, a warning mail will be sent when nearing quota
- *         'over_quota_warn_email_frequency' => 3 * 24 * 60 * 60,   // How often, in seconds, a warning mail will be sent when quota exceeded
+ *         // How often, in seconds, a warning mail will be sent when nearing quota
+ *         'nearing_quota_warn_email_frequency' => 14 * 24 * 60 * 60,
+ *         // How often, in seconds, a warning mail will be sent when quota exceeded
+ *         'over_quota_warn_email_frequency' => 3 * 24 * 60 * 60,
  *     )
  * );
  *
@@ -41,7 +58,7 @@ class block_disk_quota extends block_base {
     /**
      * Initialises the block
      */
-    function init() {
+    public function init() {
         $this->title = get_string('pluginname', 'block_disk_quota');
     }
 
@@ -50,8 +67,8 @@ class block_disk_quota extends block_base {
      *
      * @return stdObject
      */
-    function get_content() {
-        if ($this->content !== NULL) {
+    public function get_content() {
+        if ($this->content !== null) {
             return $this->content;
         }
 
@@ -75,11 +92,11 @@ class block_disk_quota extends block_base {
      *
      * @return array page-type prefix => true/false.
      */
-    function applicable_formats() {
+    public function applicable_formats() {
         return array('all' => true, 'my' => true, 'tag' => false);
     }
 
-    function quota_settings() {
+    public function quota_settings() {
         return get_config('block_disk_quota');
     }
 
@@ -118,11 +135,11 @@ class block_disk_quota extends block_base {
     /**
      * Controls whether or not it is visible to the current user.
      */
-    function is_empty() {
+    public function is_empty() {
         return !has_capability('block/disk_quota:viewblock', context_system::instance());
     }
 
-    function has_config() {
+    public function has_config() {
         return true;
     }
 }

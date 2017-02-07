@@ -1,4 +1,18 @@
 <?php
+// This file is part of the blocks/disk_quota Moodle plugin
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 /**
  * Strings for component 'block_disk_quota', language 'en'
  *
@@ -15,7 +29,7 @@ $string['err_cannot_uninstall_plugin'] = 'Uninstalling this plugin is not possib
 $string['quota_used'] = '{$a->used} of {$a->quota} GB used';
 $string['gigabytes_used'] = 'GB used';
 
-// Settings strings
+// Settings strings.
 $string['enabled'] = 'Enabled';
 $string['enabled_desc'] = 'Whether the disk quota check is enforced';
 $string['quota_gb'] = 'Disk Quota';
@@ -43,7 +57,7 @@ $string['nearing_quota_warn_email_frequency_desc'] = 'How often mails will be se
 $string['over_quota_warn_email_frequency'] = 'Over quota warn frequency';
 $string['over_quota_warn_email_frequency_desc'] = 'How often mails will be sent when the site has exceeded the quota';
 
-// Email strings
+// Email strings.
 $string['mail_nearing_quota_subject'] = 'Moodle site is nearing quota limit';
 $string['mail_nearing_quota_body'] =
 'Your Moodle site {$a->url} is currently using {$a->used} GB

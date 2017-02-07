@@ -1,4 +1,18 @@
 <?php
+// This file is part of the blocks/disk_quota Moodle plugin
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 use block_disk_quota\usage\quota_manager;
 use block_disk_quota\usage\space_usage;
@@ -73,7 +87,7 @@ class block_disk_quota_renderer extends plugin_renderer_base {
         $breakdown = $detail['breakdown'];
         arsort($breakdown);
         foreach ($breakdown as $type => $value) {
-            $data[]= array($type, round($value, 3));
+            $data[] = array($type, round($value, 3));
         }
         $table->data = $data;
         return html_writer::table($table);
@@ -89,9 +103,9 @@ class block_disk_quota_renderer extends plugin_renderer_base {
     public function replace_placeholders($str, $placeholders) {
         $search = array();
         $replace = array();
-        foreach($placeholders as $key => $value) {
-            $search[]= "{% $key %}";
-            $replace[]= $value;
+        foreach ($placeholders as $key => $value) {
+            $search[] = "{% $key %}";
+            $replace[] = $value;
         }
         return str_replace($search, $replace, $str);
     }
