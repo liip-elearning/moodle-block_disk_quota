@@ -101,38 +101,6 @@ class block_disk_quota extends block_base {
     }
 
     /**
-     * Cron is defined here instead of as a task so that the administrator can not change the
-     * schedule of the task or prevent the task from running.
-     */
-    public function cron() {
-        try {
-            $settings = $this->quota_settings();
-            if ($settings->enabled) {
-                $hardlimit = $settings->quota_gb + $settings->overage_limit_gb;
-                $warnlimit = $settings->quota_gb - $settings->warn_when_within_gb_of_limit;
-                $manager = new quota_manager();
-                $used = $manager->get_total_disk_space_used();
-                $manager->record_space_used($used, $settings->quota_gb);
-                if ($manager->block_site_if_hard_limit_exceeded($used, $hardlimit)) {
-                    $manager->notify_site_blocked($used, $settings);
-                } else if ($used >= $settings->quota_gb) {
-                    $manager->notify_over_quota($used, $settings);
-                } else if ($used >= $warnlimit) {
-                    $manager->notify_near_quota($used, $settings);
-                }
-
-                $today = date('Y.m.d', time());
-                if (!isset($settings->last_measurement_reduction) or $settings->last_measurement_reduction != $today) {
-                    $manager->reduce_old_measurements();
-                    set_config('last_measurement_reduction', $today, 'block_disk_quota');
-                }
-            }
-        } catch (Exception $e) {
-            echo $e;
-        }
-    }
-
-    /**
      * Controls whether or not it is visible to the current user.
      */
     public function is_empty() {

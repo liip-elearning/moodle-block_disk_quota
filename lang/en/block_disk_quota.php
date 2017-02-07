@@ -29,6 +29,9 @@ $string['err_cannot_uninstall_plugin'] = 'Uninstalling this plugin is not possib
 $string['quota_used'] = '{$a->used} of {$a->quota} GB used';
 $string['gigabytes_used'] = 'GB used';
 
+// Tasks.
+$string['task_get_disk_usage'] = 'Get disk usage';
+
 // Settings strings.
 $string['enabled'] = 'Enabled';
 $string['enabled_desc'] = 'Whether the disk quota check is enforced';

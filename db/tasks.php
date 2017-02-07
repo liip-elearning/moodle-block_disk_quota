@@ -15,16 +15,26 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version details
+ * Definition of disk_quota scheduled tasks.
  *
- * @package    block_disk_quota
- * @copyright  1999 onwards Martin Dougiamas (http://dougiamas.com)
- * @copyright  2015-2017 Liip AG
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package   block/disk_quota
+ * @category  task
+ * @copyright 2017 Liip AG
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2017020700;         // The current plugin version (Date: YYYYMMDDXX).
-$plugin->requires  = 2014051200;         // minimum: Moodle 2.7.
-$plugin->component = 'block_disk_quota'; // Full name of the plugin (used for diagnostics).
+/* List of handlers */
+
+$tasks = array(
+    array(
+        'classname' => 'block_disk_quota\task\get_disk_usage',
+        'blocking' => 0,
+        'minute' => '*/10',
+        'hour' => '*',
+        'day' => '*',
+        'dayofweek' => '*',
+        'month' => '*'
+    ),
+);

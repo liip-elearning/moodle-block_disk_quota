@@ -30,6 +30,9 @@ $string['err_cannot_uninstall_plugin'] = 'Ce plugin ne peut pas être désinstal
 $string['quota_used'] = '{$a->used} de {$a->quota} GB utilisés';
 $string['gigabytes_used'] = 'GB utilisés';
 
+// Tasks.
+$string['task_get_disk_usage'] = 'Enregistrer l\'utilisation d\'espace disque';
+
 // Settings strings.
 $string['enabled'] = 'Actif';
 $string['enabled_desc'] = 'Activer la vérification de quota de disque';
