@@ -31,6 +31,7 @@ $string['gigabytes_used'] = 'GB used';
 
 // Tasks.
 $string['task_get_disk_usage'] = 'Get disk usage';
+$string['task_send_heartbeat_email'] = 'Send a heartbeat email to check email transport';
 
 // Settings strings.
 $string['enabled'] = 'Enabled';
@@ -55,6 +56,8 @@ $string['support_telephone'] = 'Support telephone';
 $string['support_telephone_desc'] = 'Support telephone number for urgent contact';
 $string['support_email'] = 'Support email';
 $string['support_email_desc'] = 'Support email address';
+$string['heartbeat_email'] = 'Heartbeat email';
+$string['heartbeat_email_desc'] = 'Heartbeat email address; where the heartbeat email is sent';
 $string['nearing_quota_warn_email_frequency'] = 'Near quota warn frequency';
 $string['nearing_quota_warn_email_frequency_desc'] = 'How often mails will be sent when the site is nearing the quota';
 $string['over_quota_warn_email_frequency'] = 'Over quota warn frequency';
@@ -116,3 +119,5 @@ The Liip Elearning Team
 Contact:
   email: {$a->supportemail}
   Telephone: {$a->supporttelephone}';
+$string['mail_heartbeat_subject'] = 'Email heartbeat';
+$string['mail_heartbeat_body'] = 'Email heartbeat for Moodle site URL {$a->url}';

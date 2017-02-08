@@ -14,17 +14,18 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-/**
- * Version details
- *
- * @package    block_disk_quota
- * @copyright  1999 onwards Martin Dougiamas (http://dougiamas.com)
- * @copyright  2015-2017 Liip AG
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
+namespace block_disk_quota\task;
+use block_disk_quota\usage\quota_manager;
 
-defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2017020800;         // The current plugin version (Date: YYYYMMDDXX).
-$plugin->requires  = 2014051200;         // minimum: Moodle 2.7.
-$plugin->component = 'block_disk_quota'; // Full name of the plugin (used for diagnostics).
+class send_heartbeat_email extends \core\task\scheduled_task {
+    public function get_name() {
+        return get_string('task_send_heartbeat_email', 'block_disk_quota');
+    }
+
+    public function execute() {
+        $settings = get_config('block_disk_quota');
+        $manager = new quota_manager();
+        $manager->send_heartbeat_email($settings);
+    }
+}

@@ -179,6 +179,25 @@ class quota_manager {
     }
 
     /**
+     * Sends heartbeat email
+     *
+     * @param $settings
+     */
+    public function send_heartbeat_email($settings) {
+        $toemail = $settings->heartbeat_email;
+        if ($toemail !== \clean_param($toemail, PARAM_EMAIL)) {
+            return;
+        }
+        $user = $this->fake_user_from_bare_email_address($toemail);
+        $noreply = \core_user::get_noreply_user();
+        $subject = new \lang_string('mail_heartbeat_subject', 'block_disk_quota');
+        $mailvalues = new \stdClass;
+        $mailvalues->url = $CFG->wwwroot;
+        $body = new \lang_string('mail_heartbeat_body', 'block_disk_quota', $mailvalues);
+        email_to_user($user, $noreply, $subject->out($lang), $body->out($lang));
+    }
+
+    /**
      * Returns true if the notification should be sent.
      *
      * @param $notificationtype

@@ -98,4 +98,12 @@ if ($ADMIN->fulltree) {
         '',
         PARAM_TEXT,
         255));
+
+    $settings->add(new admin_setting_configtext(
+        'block_disk_quota/heartbeat_email',
+        get_string('heartbeat_email', 'block_disk_quota'),
+        get_string('heartbeat_email_desc', 'block_disk_quota'),
+        '',
+        PARAM_TEXT,
+        255));
 }

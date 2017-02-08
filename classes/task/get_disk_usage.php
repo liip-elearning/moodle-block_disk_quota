@@ -24,7 +24,6 @@ class get_disk_usage extends \core\task\scheduled_task {
     }
 
     public function execute() {
-
         $settings = get_config('block_disk_quota');
         $hardlimit = $settings->quota_gb + $settings->overage_limit_gb;
         $warnlimit = $settings->quota_gb - $settings->warn_when_within_gb_of_limit;
