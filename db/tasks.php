@@ -26,6 +26,11 @@
 defined('MOODLE_INTERNAL') || die();
 
 /* List of handlers */
+global $CFG;
+$hearbeatmailminute = 'R';
+if ($CFG->branch < 28) {
+    $hearbeatmailminute = mt_rand(0, 59);
+}
 
 $tasks = array(
     array(
@@ -40,8 +45,8 @@ $tasks = array(
     array(
         'classname' => 'block_disk_quota\task\send_heartbeat_email',
         'blocking' => 0,
-        'minute' => 'R',
-        'hour' => 'R',
+        'minute' => $hearbeatmailminute,
+        'hour' => '*/12',
         'day' => '*',
         'dayofweek' => '*',
         'month' => '*'
