@@ -57,6 +57,18 @@ class quota_manager {
         return $a;
     }
 
+    public static function get_activeusers_and_quota() {
+        global $DB;
+        $a = new \stdClass;
+        $a->quota = get_config('block_disk_quota', 'quota_activeusers');
+        $a->activeusers = $DB->get_field_sql("
+            SELECT count('x')
+              FROM {user}
+             WHERE lastaccess > extract(epoch from now() - INTERVAL '6 months')
+        ");
+        return $a;
+    }
+
     public function block_site_if_hard_limit_exceeded($used, $hardlimit) {
         global $CFG;
         $blocksite = $used >= $hardlimit;

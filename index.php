@@ -35,4 +35,5 @@ echo $OUTPUT->heading(format_string($title));
 
 $renderer = $PAGE->get_renderer('block_disk_quota');
 echo $renderer->usage_detail();
+echo $renderer->activeusers_quota();
 echo $OUTPUT->footer();

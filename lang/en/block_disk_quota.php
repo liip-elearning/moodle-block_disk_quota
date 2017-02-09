@@ -28,6 +28,8 @@ $string['disk_quota:viewusage'] = 'View disk quota details page';
 $string['err_cannot_uninstall_plugin'] = 'Uninstalling this plugin is not possible';
 $string['quota_used'] = '{$a->used} of {$a->quota} GB used';
 $string['gigabytes_used'] = 'GB used';
+$string['active_users'] = '{$a->activeusers} active users ({$a->quota} allowed)';
+
 
 // Tasks.
 $string['task_get_disk_usage'] = 'Get disk usage';
@@ -38,6 +40,8 @@ $string['enabled'] = 'Enabled';
 $string['enabled_desc'] = 'Whether the disk quota check is enforced';
 $string['quota_gb'] = 'Disk Quota';
 $string['quota_gb_desc'] = 'Disk Quota in gigabytes';
+$string['quota_activeusers'] = 'Active users Quota';
+$string['quota_activeusers_desc'] = 'Quota of active users (connected in the last 6 months)';
 $string['warn_when_within_gb_of_limit'] = 'Warn when this near limit';
 $string['warn_when_within_gb_of_limit_desc'] = 'Send a warning to the the defined users when the disk usage is within X gigabytes of the limit';
 $string['overage_limit_gb'] = 'Allow exceeding limit by';

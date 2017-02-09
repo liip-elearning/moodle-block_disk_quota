@@ -30,6 +30,9 @@ if ($ADMIN->fulltree) {
     $gb = array_merge(range(0, 9),  range(10, 300, 5));
     $gbstrings = array_map('strval', $gb);
     $gbchoices = array_combine($gbstrings, $gbstrings);
+    $activeusers = array(50, 300, 1500, 3000, 9000, 18000, 30000);
+    $activeusersstrings = array_map('strval', $activeusers);
+    $activeuserschoices = array_combine($activeusersstrings, $activeusersstrings);
 
     $settings->add(new admin_setting_configcheckbox(
         'block_disk_quota/enabled',
@@ -106,4 +109,10 @@ if ($ADMIN->fulltree) {
         '',
         PARAM_TEXT,
         255));
+
+    $settings->add(new admin_setting_configselect(
+        'block_disk_quota/quota_activeusers',
+        get_string('quota_activeusers', 'block_disk_quota'),
+        get_string('quota_activeusers_desc', 'block_disk_quota'),
+        '300', $activeuserschoices));
 }
