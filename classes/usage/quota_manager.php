@@ -202,7 +202,10 @@ class quota_manager {
             return;
         }
         $user = $this->fake_user_from_bare_email_address($toemail);
-        $noreply = \core_user::get_noreply_user();
+        $noreplyaddress = empty($CFG->noreplyaddress) ?
+                          'noreply@' . get_host_from_url($CFG->wwwroot) :
+                          $CFG->noreplyaddress;
+        $noreply = $this->fake_user_from_bare_email_address($noreplyaddress);
         $subject = new \lang_string('mail_heartbeat_subject', 'block_disk_quota');
         $mailvalues = new \stdClass;
         $mailvalues->url = $CFG->wwwroot;
