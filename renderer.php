@@ -25,19 +25,12 @@ defined('MOODLE_INTERNAL') || die;
 class block_disk_quota_renderer extends plugin_renderer_base {
 
     public function current_usage() {
-        $usage = $this->disk_quota_usage();
-        $template = '
-            {% usage %}
-            <a class="disk_quota_detail_link" href="{% url %}">{% link_text %}</a>
-        ';
-
         $vars = array(
-            'usage' => $usage,
+            'usage' => $this->disk_quota_usage(),
             'url' => new moodle_url('/blocks/disk_quota/index.php'),
             'link_text' => get_string('supplyinfo', 'moodle'),
         );
-
-        return $this->replace_placeholders($template, $vars);
+        return $this->render_from_template('block_disk_quota/current_usage', $vars);
     }
 
     public function disk_quota_usage() {
@@ -47,31 +40,16 @@ class block_disk_quota_renderer extends plugin_renderer_base {
         if (is_null($info->used)) {
             $info->used = 'unknown';
         }
-        $template = '
-            <div class="disk_quota_usage">
-                {% space_used %}
-            </div>
-        ';
         $vars = array('space_used' => get_string('quota_used', 'block_disk_quota', $info));
-        return $this->replace_placeholders($template, $vars);
-
+        return $this->render_from_template('block_disk_quota/disk_quota_usage', $vars);
     }
 
     public function usage_detail() {
-        $usage = $this->disk_quota_usage();
-        $detail = $this->usage_detail_table();
-
-        $template = '
-            <div class="disk_quota_usage_detail">
-                <div class="overview">
-                    {% overview %}
-                </div>
-                <div class="detail">
-                    {% detail %}
-                </div>
-            </div>
-        ';
-        return $this->replace_placeholders($template, array('overview' => $usage, 'detail' => $detail));
+        $vars = array(
+            'overview' => $this->disk_quota_usage(),
+            'detail' => $this->usage_detail_table(),
+        );
+        return $this->render_from_template('block_disk_quota/usage_detail', $vars);
     }
 
     public function usage_detail_table() {
@@ -96,41 +74,11 @@ class block_disk_quota_renderer extends plugin_renderer_base {
     public function activeusers_usage() {
         $quotamanager = new quota_manager();
         $info = $quotamanager->get_activeusers_and_quota();
-        $template = '
-            <div class="disk_quota_activeusers_usage">
-                {% active_users %}
-            </div>
-        ';
         $vars = array('active_users' => get_string('active_users', 'block_disk_quota', $info));
-        return $this->replace_placeholders($template, $vars);
+        return $this->render_from_template('block_disk_quota/activeusers_usage', $vars);
     }
 
     public function activeusers_quota() {
-        $usage = $this->activeusers_usage();
-
-        $template = '
-            <div class="disk_quota_activeusers_usage_detail">
-                <div class="overview">
-                    {% overview %}
-                </div>
-            </div>
-        ';
-        return $this->replace_placeholders($template, array('overview' => $usage));
-    }
-
-    /**
-     * A very simple and fragile templating system.
-     * @param $str
-     * @param $placeholders
-     * @return mixed
-     */
-    public function replace_placeholders($str, $placeholders) {
-        $search = array();
-        $replace = array();
-        foreach ($placeholders as $key => $value) {
-            $search[] = "{% $key %}";
-            $replace[] = $value;
-        }
-        return str_replace($search, $replace, $str);
+        return $this->render_from_template('block_disk_quota/activeusers_quota', $this->activeusers_usage());
     }
 }
