@@ -1,4 +1,18 @@
 <?php
+// This file is part of the blocks/disk_quota Moodle plugin
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace block_disk_quota\usage;
 
@@ -6,7 +20,7 @@ class quota_manager {
 
     protected $spaceusage;
 
-    function __construct() {
+    public function __construct() {
         // TODO: determine what collectors other than internal_space_usage should be used.
         $collectors = array(new internal_space_usage());
         $this->spaceusage = new space_usage($collectors);
@@ -43,8 +57,7 @@ class quota_manager {
         return $a;
     }
 
-    public function block_site_if_hard_limit_exceeded($used, $hardlimit)
-    {
+    public function block_site_if_hard_limit_exceeded($used, $hardlimit) {
         global $CFG;
         $blocksite = $used >= $hardlimit;
         if ($blocksite) {
@@ -56,7 +69,7 @@ class quota_manager {
 
     protected function notification_users($settings) {
         if ($settings->do_email_admins) {
-            // throw away the user-id keys:
+            // Throw away the user-id keys.
             $users = array_values(get_admins());
         } else {
             $users = array();
@@ -66,7 +79,7 @@ class quota_manager {
             $others = str_replace(' ', '', $settings->email_others);
             $otherslist = explode(',', $others);
             foreach ($otherslist as $other) {
-                $users[]= $this->fake_user_from_bare_email_address($other);
+                $users[] = $this->fake_user_from_bare_email_address($other);
             }
         }
         return $users;
@@ -80,7 +93,7 @@ class quota_manager {
      */
     protected function fake_user_from_bare_email_address($email) {
         $user = new \stdClass;
-        foreach(get_all_user_name_fields() as $field => $ignore) {
+        foreach (get_all_user_name_fields() as $field => $ignore) {
             $user->$field = '';
         }
         $user->firstname = explode('@', $email)[0];
@@ -146,16 +159,16 @@ class quota_manager {
      * The notification mails have a consistent settings / language string naming convention; that fact
      * is used to generalize the sending of mails.
      *
-     * @param $mail_type
+     * @param $mailtype
      * @param $users
      * @param $mailvalues
      * @param $settings
      */
-    public function send_notification_mails($mail_type, $users, $mailvalues, $settings) {
+    public function send_notification_mails($mailtype, $users, $mailvalues, $settings) {
         global $CFG;
         $noreply = \core_user::get_noreply_user();
-        $subjectkey = 'mail_' . $mail_type . '_subject';
-        $bodykey = 'mail_' . $mail_type . '_body';
+        $subjectkey = 'mail_' . $mailtype . '_subject';
+        $bodykey = 'mail_' . $mailtype . '_body';
         $subject = new \lang_string($subjectkey, 'block_disk_quota');
         foreach ($users as $user) {
             $lang = empty($user->lang) ? $CFG->lang : $user->lang;
@@ -163,6 +176,25 @@ class quota_manager {
             $body = new \lang_string($bodykey, 'block_disk_quota', $mailvalues);
             email_to_user($user, $noreply, $subject->out($lang), $body->out($lang));
         }
+    }
+
+    /**
+     * Sends heartbeat email
+     *
+     * @param $settings
+     */
+    public function send_heartbeat_email($settings) {
+        $toemail = $settings->heartbeat_email;
+        if ($toemail !== \clean_param($toemail, PARAM_EMAIL)) {
+            return;
+        }
+        $user = $this->fake_user_from_bare_email_address($toemail);
+        $noreply = \core_user::get_noreply_user();
+        $subject = new \lang_string('mail_heartbeat_subject', 'block_disk_quota');
+        $mailvalues = new \stdClass;
+        $mailvalues->url = $CFG->wwwroot;
+        $body = new \lang_string('mail_heartbeat_body', 'block_disk_quota', $mailvalues);
+        email_to_user($user, $noreply, $subject->out($lang), $body->out($lang));
     }
 
     /**
@@ -179,7 +211,7 @@ class quota_manager {
 
         $lastsentattribute = $this->notification_last_sent_attribute($notificationtype);
         if (empty($settings->$lastsentattribute)) {
-            // Value has never been set
+            // Value has never been set.
             return true;
         }
 
@@ -259,7 +291,7 @@ class quota_manager {
         // Extract the ids that should not be deleted.
         $keepids = array();
         foreach ($days as $info) {
-            $keepids[]= $info[0];
+            $keepids[] = $info[0];
         }
 
         // Delete all those old records but the ones that are being kept.
@@ -269,7 +301,7 @@ class quota_manager {
             "timemeasured < ? AND historic = 0 AND id NOT IN ($keepidslist)",
             array($thirtydaysago, $keepidslist));
 
-        // Set the historic flag on the kept records, so that they will not be considered again by this method:
+        // Set the historic flag on the kept records, so that they will not be considered again by this method.
         $DB->execute("UPDATE {block_disk_quota_measurement} set historic=1 where id in ($keepidslist)");
     }
 }

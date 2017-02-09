@@ -1,4 +1,19 @@
 <?php
+// This file is part of the blocks/disk_quota Moodle plugin
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
 /**
  * Strings for component 'block_disk_quota', language 'de'
  *
@@ -15,7 +30,7 @@ $string['err_cannot_uninstall_plugin'] = 'Dieses Plugin kann nicht entfernt werd
 $string['quota_used'] = '{$a->used} von {$a->quota} GB benutzt';
 $string['gigabytes_used'] = 'GB benutzt';
 
-// Settings strings
+// Settings strings.
 $string['enabled'] = 'Aktivieren';
 $string['enabled_desc'] = 'Speicherplatz-Limite aktivieren';
 $string['quota_gb'] = 'Speicherplatz-Limite';
@@ -42,7 +57,7 @@ $string['nearing_quota_warn_email_frequency_desc'] = 'Wie häufig Emails gesende
 $string['over_quota_warn_email_frequency'] = 'Frequenz für Speicherplatz-Überschreitungs-Warnungen';
 $string['over_quota_warn_email_frequency_desc'] = 'Wie häufig Emails gesendet werden, wenn die Speicherplatz-Limite überschritten ist';
 
-// Email strings
+// Email strings.
 $string['mail_nearing_quota_subject'] = 'Moodle-Instanz nähert sich dem Limit der Speicherplatz-Auslastung';
 $string['mail_nearing_quota_body'] =
 'Ihre Moodle-Instanz {$a->url} nutzt aktuell {$a->used} GB

@@ -1,4 +1,18 @@
 <?php
+// This file is part of the blocks/disk_quota Moodle plugin
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace block_disk_quota\usage;
 
@@ -14,8 +28,19 @@ class internal_space_usage implements space_usage_interface {
         $used = $DB->get_records_sql("
             SELECT mimetype, sum(sum) / ? AS gb_used FROM (
                 SELECT iq.mimetype, SUM(iq.filesize) FROM (
-                        SELECT filesize, regexp_replace(replace(mimetype, 'application/vnd.moodle.backup', 'backup'), '/.+\$', '') AS mimetype FROM {files}
-                        WHERE  filesize > 0 GROUP BY filesize, regexp_replace(replace(mimetype, 'application/vnd.moodle.backup', 'backup'), '/.+\$', ''), contenthash) iq
+                        SELECT filesize,
+                               regexp_replace(
+                                   replace(mimetype, 'application/vnd.moodle.backup', 'backup'),
+                                   '/.+\$',
+                                   ''
+                               ) AS mimetype FROM {files}
+                        WHERE filesize > 0
+                        GROUP BY filesize,
+                                 regexp_replace(
+                                     replace(mimetype, 'application/vnd.moodle.backup', 'backup'),
+                                     '/.+\$',
+                                     ''
+                                 ), contenthash) iq
                 GROUP BY iq.mimetype
                 UNION VALUES
                     ('audio',0),
@@ -32,7 +57,7 @@ class internal_space_usage implements space_usage_interface {
         $total = 0;
         $breakdown = array();
 
-        foreach($used as $record) {
+        foreach ($used as $record) {
             $total += $record->gb_used;
             $breakdown[$record->mimetype] = $record->gb_used;
         }

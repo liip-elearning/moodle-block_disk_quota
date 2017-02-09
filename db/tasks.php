@@ -15,21 +15,40 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Plugin info class.
+ * Definition of disk_quota scheduled tasks.
  *
- * @package   block_disk_quota
- * @copyright 201 Liip AG {@link http://liip.ch}
+ * @package   block/disk_quota
+ * @category  task
+ * @copyright 2017 Liip AG
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-namespace mod_disk_quota\plugininfo;
-
-use core\plugininfo\block;
 
 defined('MOODLE_INTERNAL') || die();
 
-
-class disk_quota extends block {
-    public function is_uninstall_allowed() {
-        return false;
-    }
+/* List of handlers */
+global $CFG;
+$hearbeatmailminute = 'R';
+if ($CFG->branch < 28) {
+    $hearbeatmailminute = mt_rand(0, 59);
 }
+
+$tasks = array(
+    array(
+        'classname' => 'block_disk_quota\task\get_disk_usage',
+        'blocking' => 0,
+        'minute' => '*/10',
+        'hour' => '*',
+        'day' => '*',
+        'dayofweek' => '*',
+        'month' => '*'
+    ),
+    array(
+        'classname' => 'block_disk_quota\task\send_heartbeat_email',
+        'blocking' => 0,
+        'minute' => $hearbeatmailminute,
+        'hour' => '*/12',
+        'day' => '*',
+        'dayofweek' => '*',
+        'month' => '*'
+    ),
+);
