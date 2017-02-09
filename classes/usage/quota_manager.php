@@ -196,6 +196,7 @@ class quota_manager {
      * @param $settings
      */
     public function send_heartbeat_email($settings) {
+        global $CFG;
         $toemail = $settings->heartbeat_email;
         if ($toemail !== \clean_param($toemail, PARAM_EMAIL)) {
             return;
@@ -206,7 +207,7 @@ class quota_manager {
         $mailvalues = new \stdClass;
         $mailvalues->url = $CFG->wwwroot;
         $body = new \lang_string('mail_heartbeat_body', 'block_disk_quota', $mailvalues);
-        email_to_user($user, $noreply, $subject->out($lang), $body->out($lang));
+        email_to_user($user, $noreply, $subject->out(), $body->out());
     }
 
     /**
