@@ -93,6 +93,30 @@ class block_disk_quota_renderer extends plugin_renderer_base {
         return html_writer::table($table);
     }
 
+    public function activeusers_usage() {
+        $quotamanager = new quota_manager();
+        $info = $quotamanager->get_activeusers_and_quota();
+        $template = '
+            <div class="disk_quota_activeusers_usage">
+                {% active_users %}
+            </div>
+        ';
+        $vars = array('active_users' => get_string('active_users', 'block_disk_quota', $info));
+        return $this->replace_placeholders($template, $vars);
+    }
+
+    public function activeusers_quota() {
+        $usage = $this->activeusers_usage();
+
+        $template = '
+            <div class="disk_quota_activeusers_usage_detail">
+                <div class="overview">
+                    {% overview %}
+                </div>
+            </div>
+        ';
+        return $this->replace_placeholders($template, array('overview' => $usage));
+    }
 
     /**
      * A very simple and fragile templating system.

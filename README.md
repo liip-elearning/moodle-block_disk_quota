@@ -42,6 +42,7 @@ $CFG->forced_plugin_settings = array(
         'nearing_quota_warn_email_frequency' => 14 * 24 * 60 * 60,  // How often, in seconds, a warning mail will be sent when nearing quota
         'over_quota_warn_email_frequency' => 3 * 24 * 60 * 60,   // How often, in seconds, a warning mail will be sent when quota exceeded
         'heartbeat_email' => 'heartbeat+example@example.com', // Where to send the regular heartbeat email
+        'quota_activeusers' => 300, // Active users' quota (connections in the last 6 months)
     )
 );
 ```
