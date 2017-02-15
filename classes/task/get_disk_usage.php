@@ -30,7 +30,7 @@ class get_disk_usage extends \core\task\scheduled_task {
         $manager = new quota_manager();
         $used = $manager->get_total_disk_space_used();
         $manager->record_space_used($used, $settings->quota_gb);
-        if ($settings->enabled)
+        if ($settings->enabled) {
             if ($manager->block_site_if_hard_limit_exceeded($used, $hardlimit)) {
                 $manager->notify_site_blocked($used, $settings);
             } else if ($used >= $settings->quota_gb) {
