@@ -21,7 +21,7 @@
  * @copyright 2015 Liip AG {@link http://liip.ch}
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-$string['pluginname'] = 'Speicherplatz-Auslastung';
+$string['pluginname'] = 'Liip Nutzung Auslastung';
 $string['disk_quota:addinstance'] = 'Neuen Speicherplatz-Auslastungs-Block hinzufügen';
 $string['disk_quota:myaddinstance'] = 'Neuen Speicherplatz-Auslastungs-Block zu Meine Startseite (Dashboard) hinzufügen';
 $string['disk_quota:viewblock'] = 'Speicherplatz-Auslastungs-Block ansehen';

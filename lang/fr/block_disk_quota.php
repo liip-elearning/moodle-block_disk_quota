@@ -21,7 +21,7 @@
  * @copyright 2015 Liip AG {@link http://liip.ch}
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-$string['pluginname'] = 'Quota de disque';
+$string['pluginname'] = 'Quota d\'utilisation Liip';
 $string['disk_quota:addinstance'] = 'Ajouter un nouveau bloc Quota de disque';
 $string['disk_quota:myaddinstance'] = 'Ajouter un nouveau bloc Quota de disque à ma Dashboard';
 $string['disk_quota:viewblock'] = 'un bloc Quota de disque';

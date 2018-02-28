@@ -20,7 +20,7 @@
  * @copyright 2015 Liip AG {@link http://liip.ch}
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-$string['pluginname'] = 'Disk Quota';
+$string['pluginname'] = 'Liip Usage Quota';
 $string['disk_quota:addinstance'] = 'Add a new Disk Quota block';
 $string['disk_quota:myaddinstance'] = 'Add a new Disk Quota block to My Home (aka Dashboard)';
 $string['disk_quota:viewblock'] = 'View a disk quota block';
