@@ -38,10 +38,24 @@ class block_disk_quota_renderer extends plugin_renderer_base {
         $quotamanager = new quota_manager();
         $info = $quotamanager->get_quota_and_space_used_gb();
         $info->quota = round(floatval($info->quota), 1);
+
+        $classes = '';
         if (is_null($info->used)) {
             $info->used = 'unknown';
+        } else {
+            $info->used = round(floatval($info->used), 3);
+            $diff = $info->quota - $info->used;
+
+            if ($diff <= 0) {
+                $classes .= ' disk-quota--danger';
+            } elseif ($diff <= $info->warn_limit) {
+                $classes .= ' disk-quota--warning';
+            }
         }
-        $vars = array('space_used' => get_string('quota_used', 'block_disk_quota', $info));
+        $vars = array(
+            'space_used' => get_string('quota_used', 'block_disk_quota', $info),
+            'classes' => $classes
+        );
         return $this->render_from_template('block_disk_quota/disk_quota_usage', $vars);
     }
 
@@ -75,7 +89,13 @@ class block_disk_quota_renderer extends plugin_renderer_base {
     public function activeusers_usage() {
         $quotamanager = new quota_manager();
         $info = $quotamanager->get_activeusers_and_quota();
-        $vars = array('active_users' => get_string('active_users', 'block_disk_quota', $info));
+
+        $classes = $info->activeusers >= $info->quota ? ' disk-quota--warning' : '';
+
+        $vars = array(
+            'active_users' => get_string('active_users', 'block_disk_quota', $info),
+            'classes' => $classes
+        );
         return $this->render_from_template('block_disk_quota/activeusers_usage', $vars);
     }
 

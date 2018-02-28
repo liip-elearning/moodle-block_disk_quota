@@ -54,6 +54,7 @@ class quota_manager {
         $a = new \stdClass;
         $a->quota = get_config('block_disk_quota', 'quota_gb');
         $a->used = $used;
+        $a->warn_limit = floatval(get_config('block_disk_quota', 'warn_when_within_gb_of_limit'));
         return $a;
     }
 

@@ -83,7 +83,6 @@ class block_disk_quota extends block_base {
         $this->content->text = '';
         $this->content->footer = '';
 
-        // TODO: Renderer could show a color-coded status bar or something like that.
         $renderer = $this->page->get_renderer('block_disk_quota');
         $this->content->text = $renderer->current_usage();
         return $this->content;
