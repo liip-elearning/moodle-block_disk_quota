@@ -27,6 +27,7 @@ class block_disk_quota_renderer extends plugin_renderer_base {
     public function current_usage() {
         $vars = array(
             'usage' => $this->disk_quota_usage(),
+            'activeusers' => $this->activeusers_usage(),
             'url' => new moodle_url('/blocks/disk_quota/index.php'),
             'link_text' => get_string('supplyinfo', 'moodle'),
         );
