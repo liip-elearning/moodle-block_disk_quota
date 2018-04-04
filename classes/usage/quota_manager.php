@@ -65,7 +65,7 @@ class quota_manager {
         $a->activeusers = $DB->get_field_sql("
             SELECT count('x')
               FROM {user}
-             WHERE lastaccess > extract(epoch from now() - INTERVAL '6 months')
+             WHERE lastaccess > extract(epoch from now() - INTERVAL '1 year')
         ");
         return $a;
     }

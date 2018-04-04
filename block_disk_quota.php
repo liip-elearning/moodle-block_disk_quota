@@ -49,7 +49,7 @@ use block_disk_quota\usage\quota_manager;
  *         // How often, in seconds, a warning mail will be sent when quota exceeded
  *         'over_quota_warn_email_frequency' => 3 * 24 * 60 * 60,
  *         'heartbeat_email' => 'heartbeat+example@example.com', // Where to send the regular heartbeat email
- *         'quota_activeusers' => 300, // Active users' quota (connections in the last 6 months)
+ *         'quota_activeusers' => 300, // Active users' quota (connections in the last 365 days)
  *     )
  * );
  *
