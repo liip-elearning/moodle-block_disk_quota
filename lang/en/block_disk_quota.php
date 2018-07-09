@@ -125,3 +125,8 @@ Contact:
   Telephone: {$a->supporttelephone}';
 $string['mail_heartbeat_subject'] = 'Email heartbeat';
 $string['mail_heartbeat_body'] = 'Email heartbeat for Moodle site URL {$a->url}';
+
+$string['backup_filename'] = 'Filename';
+$string['backup_course'] = 'Course';
+$string['backup_timemodified'] = 'Last modified';
+$string['backup_size'] = 'Size';
