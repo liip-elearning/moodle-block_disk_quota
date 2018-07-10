@@ -13,46 +13,12 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
 /**
  * class block_disk_quota
  *
  * @package    block_disk_quota
  * @copyright  2015 Liip AG {@link http://liip.ch}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
-
-use block_disk_quota\usage\quota_manager;
-
-/**
- * How it works:
- *
- * The cron runs every x minutes and records the space used.
- * It also checks how the space used relates to the quota.
- * - If lower than, but near quota, send a mail (but not every time the cron runs)
- * - If above, but not way above, send a mail (every day?)
- * - If above the hard limit quota, put site in maintenance mode with a message about being over quota.
- *
- * Configuration:
- * The following block settings variables must be defined in code (e.g. in config.php), so that the admin users
- * can not change them:
- * $CFG->forced_plugin_settings = array(
- *     'block_disk_quota'  => array(
- *         'quota_gb' => 50,  // Quota allocated for the entire Moodle
- *         'warn_when_within_gb_of_limit' => 5,  // When within this many GB of limit, start sending warning mails
- *         'overage_limit_gb' => 5,  // How many GB over the limit to allow before auto-blocking the site
- *         'do_email_admins' => true,  // If true, all warning / site blocked mails will be sent to all admins
- *         'support_telephone' => '555 1234',
- *         'support_email' => 'support@example.com',
- *         // How often, in seconds, a warning mail will be sent when nearing quota
- *         'nearing_quota_warn_email_frequency' => 14 * 24 * 60 * 60,
- *         // How often, in seconds, a warning mail will be sent when quota exceeded
- *         'over_quota_warn_email_frequency' => 3 * 24 * 60 * 60,
- *         'heartbeat_email' => 'heartbeat+example@example.com', // Where to send the regular heartbeat email
- *         'quota_activeusers' => 300, // Active users' quota (connections in the last 365 days)
- *     )
- * );
- *
  */
 
 class block_disk_quota extends block_base {

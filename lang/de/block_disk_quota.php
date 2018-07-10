@@ -120,3 +120,4 @@ $string['backup_filename'] = 'Dateiname';
 $string['backup_course'] = 'Kurs';
 $string['backup_timemodified'] = 'Zuletzt geändert';
 $string['backup_size'] = 'Größe';
+$string['backup_page_title'] = 'Details zur Sicherung';

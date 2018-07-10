@@ -21,10 +21,8 @@ namespace block_disk_quota\usage;
  *
  * Provides detail about the space used by the files that Moodle manages.
  */
-class internal_backup_usage
-{
-    public function get_backup_paginated($limitfrom = 0, $limitnum = 0)
-    {
+class internal_backup_usage {
+    public function get_backup_paginated($limitfrom = 0, $limitnum = 0) {
         $result = new \stdClass();
         $result->total = $this->count();
         $result->limitfrom = $limitfrom;
@@ -34,24 +32,23 @@ class internal_backup_usage
         }
 
         $result->hasnext = $result->total > $result->limitfrom + $result->limitnum;
-        $result->data = $this->get_backup_details($result->limitfrom,$result->limitnum);
+        $result->data = $this->get_backup_details($result->limitfrom, $result->limitnum);
         return $result;
     }
 
-    public function get_backup_details($limitfrom = 0, $limitnum = 0)
-    {
+    public function get_backup_details($limitfrom = 0, $limitnum = 0) {
         global $DB;
 
-        return $DB->get_records_sql("
-                SELECT file.id,file.mimetype, file.filename, file.filesize, file.timemodified, file.contextid, course.id as course_id, course.fullname as course_name FROM {files} file
-                JOIN {context} co ON file.contextid = co.id 
-                JOIN {course} course ON course.id = co.instanceid
-                WHERE file.filesize > 0 and file.mimetype like 'application/vnd.moodle.backup'
-                ORDER BY file.filesize DESC, file.timemodified ASC", array(), $limitfrom, $limitnum);
+        return $DB->get_records_sql(
+                "SELECT file.id,file.mimetype, file.filename, file.filesize, file.timemodified, ".
+                "file.contextid, course.id as course_id, course.fullname as course_name FROM {files} file ".
+                "JOIN {context} co ON file.contextid = co.id ".
+                "JOIN {course} course ON course.id = co.instanceid ".
+                "WHERE file.filesize > 0 and file.mimetype like 'application/vnd.moodle.backup' ".
+                "ORDER BY file.filesize DESC, file.timemodified ASC", array(), $limitfrom, $limitnum);
     }
 
-    public function count()
-    {
+    public function count() {
         static $count = null;
         if ($count !== null) {
             return $count;
@@ -59,7 +56,7 @@ class internal_backup_usage
 
         global $DB;
         $count = $DB->count_records('files', [
-            "mimetype" => 'application/vnd.moodle.backup'
+                "mimetype" => 'application/vnd.moodle.backup'
         ]);
         return $count;
     }

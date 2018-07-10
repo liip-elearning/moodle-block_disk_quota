@@ -130,3 +130,4 @@ $string['backup_filename'] = 'Filename';
 $string['backup_course'] = 'Course';
 $string['backup_timemodified'] = 'Last modified';
 $string['backup_size'] = 'Size';
+$string['backup_page_title'] = 'Backups details';

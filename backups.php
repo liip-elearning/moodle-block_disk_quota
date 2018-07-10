@@ -26,8 +26,8 @@ $PAGE->set_context($systemcontext);
 $PAGE->set_pagelayout('report');
 
 // Print the header.
-$title = get_string("pluginname", "block_disk_quota");
-$PAGE->navbar->add($title);
+$title = get_string("backup_page_title", "block_disk_quota");
+$PAGE->navbar->add($title,  new moodle_url('/blocks/disk_quota/index.php'));
 $PAGE->navbar->add("Backups");
 $PAGE->set_title($title);
 echo $OUTPUT->header();
@@ -35,10 +35,10 @@ echo $OUTPUT->heading(format_string($title));
 
 
 $page = optional_param('page', 1, PARAM_INT);
-$per_page = 1;
+$perpage = 1;
 
 $renderer = $PAGE->get_renderer('block_disk_quota');
-echo $renderer->disk_backup_usage($page, $per_page);
+echo $renderer->disk_backup_usage($page, $perpage);
 
 
 echo $OUTPUT->footer();
