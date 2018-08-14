@@ -35,7 +35,7 @@ echo $OUTPUT->heading(format_string($title));
 
 
 $page = optional_param('page', 1, PARAM_INT);
-$perpage = 1;
+$perpage = 15;
 
 $renderer = $PAGE->get_renderer('block_disk_quota');
 echo $renderer->disk_backup_usage($page, $perpage);
