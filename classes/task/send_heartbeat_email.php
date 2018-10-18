@@ -28,4 +28,19 @@ class send_heartbeat_email extends \core\task\scheduled_task {
         $manager = new quota_manager();
         $manager->send_heartbeat_email($settings);
     }
+
+    /**
+     * Don't allow disabling at all.
+     */
+    public function get_run_if_component_disabled() {
+        return true;
+    }
+
+    public function set_disabled($disabled) {
+        // No-op.
+    }
+
+    public function get_disabled() {
+        return false;
+    }
 }
