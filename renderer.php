@@ -15,9 +15,6 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 use block_disk_quota\usage\quota_manager;
-use block_disk_quota\usage\space_usage;
-
-defined('MOODLE_INTERNAL') || die;
 
 /**
  * disk_quota block renderer
@@ -26,10 +23,10 @@ class block_disk_quota_renderer extends plugin_renderer_base {
 
     public function current_usage() {
         $vars = array(
-            'usage' => $this->disk_quota_usage(),
-            'activeusers' => $this->activeusers_usage(),
-            'url' => new moodle_url('/blocks/disk_quota/index.php'),
-            'link_text' => get_string('supplyinfo', 'moodle'),
+                'usage' => $this->disk_quota_usage(),
+                'activeusers' => $this->activeusers_usage(),
+                'url' => new moodle_url('/blocks/disk_quota/index.php'),
+                'link_text' => get_string('supplyinfo', 'moodle'),
         );
         return $this->render_from_template('block_disk_quota/current_usage', $vars);
     }
@@ -48,21 +45,61 @@ class block_disk_quota_renderer extends plugin_renderer_base {
 
             if ($diff <= 0) {
                 $classes .= ' disk-quota--danger';
-            } elseif ($diff <= $info->warn_limit) {
+            } else if ($diff <= $info->warn_limit) {
                 $classes .= ' disk-quota--warning';
             }
         }
         $vars = array(
-            'space_used' => get_string('quota_used', 'block_disk_quota', $info),
-            'classes' => $classes
+                'space_used' => get_string('quota_used', 'block_disk_quota', $info),
+                'classes' => $classes
         );
         return $this->render_from_template('block_disk_quota/disk_quota_usage', $vars);
     }
 
+    /**
+     * Source: https://stackoverflow.com/a/2510540
+     *
+     * @param int $size Size in Bytes
+     * @param int $precision
+     * @return string
+     */
+    protected static function format_bytes($size, $precision = 2) {
+        $base = log($size, 1024);
+
+        $suffixes = array('o', 'Ko', 'Mo', 'Go', 'To');
+        $unit = floor($base);
+        return round(pow(1024, $base - floor($base)), $precision) . ' ' . $suffixes[$unit];
+    }
+
+    /**
+     * @param int $page
+     * @param int $limit
+     * @return bool|string
+     * @throws moodle_exception
+     */
+    public function disk_backup_usage($page = 1, $limit = 100) {
+        if ($limit < 1) {
+            throw new \InvalidArgumentException("Limit should be >= 1");
+        }
+        $backupusage = new block_disk_quota\usage\internal_backup_usage();
+        $vars = $backupusage->get_backup_paginated(($page - 1) * $limit, $limit);
+        // Render each line as sting, to be compatible with mustache.
+        $vars->data = array_values(array_map(function($element) {
+            $element->filesize = self::format_bytes($element->filesize);
+            $element->course_url = new moodle_url("/course/view.php", array("id" => $element->course_id));
+            return "" . $this->render_from_template('block_disk_quota/disk_backup_usage_line', (array) $element);
+        }, $vars->data));
+
+        return $this->render_from_template('block_disk_quota/disk_backup_usage', (array) $vars) . "\n" .
+                $this->render_backup_pagination($page, $limit, $vars->total, function($page) {
+                    return new moodle_url("/blocks/disk_quota/backups.php", ["page" => $page]);
+                });
+    }
+
     public function usage_detail() {
         $vars = array(
-            'overview' => $this->disk_quota_usage(),
-            'detail' => $this->usage_detail_table(),
+                'overview' => $this->disk_quota_usage(),
+                'detail' => $this->usage_detail_table(),
         );
         return $this->render_from_template('block_disk_quota/usage_detail', $vars);
     }
@@ -72,15 +109,20 @@ class block_disk_quota_renderer extends plugin_renderer_base {
         $detail = $quotamanager->get_usage_details();
         $table = new html_table();
         $table->head = array(
-            get_string('type', 'search'),
-            get_string('gigabytes_used', 'block_disk_quota')
+                get_string('type', 'search'),
+                get_string('gigabytes_used', 'block_disk_quota')
         );
         $data = array();
 
         $breakdown = $detail['breakdown'];
         arsort($breakdown);
         foreach ($breakdown as $type => $value) {
-            $data[] = array($type, round($value, 3));
+            if ("backup" === $type && $value > 0.0) {
+                $backuplink = html_writer::link(new moodle_url("/blocks/disk_quota/backups.php"), $type);
+                $data[] = array($backuplink, round($value, 3));
+            } else {
+                $data[] = array($type, round($value, 3));
+            }
         }
         $table->data = $data;
         return html_writer::table($table);
@@ -93,13 +135,64 @@ class block_disk_quota_renderer extends plugin_renderer_base {
         $classes = $info->activeusers >= $info->quota ? ' disk-quota--warning' : '';
 
         $vars = array(
-            'active_users' => get_string('active_users', 'block_disk_quota', $info),
-            'classes' => $classes
+                'active_users' => get_string('active_users', 'block_disk_quota', $info),
+                'classes' => $classes
         );
         return $this->render_from_template('block_disk_quota/activeusers_usage', $vars);
     }
 
     public function activeusers_quota() {
         return $this->render_from_template('block_disk_quota/activeusers_quota', $this->activeusers_usage());
+    }
+
+    /**
+     * @param int $page
+     * @param int $limit Must be > 0
+     * @param int $total
+     * @param callable $linkgenerator
+     * @return string
+     */
+    private function render_backup_pagination($page, $limit, $total, callable $linkgenerator) {
+        $page = intval($page);
+        $pagefrom = max(1, $page - 3);
+        $maxpage = ceil($total / $limit);
+        $pageto = min($maxpage, $page + 3);
+
+        if ($maxpage < 2) {
+            return '';
+        }
+
+        $output = '<nav aria-label="Page"><div class="pagination">';
+        if ($page > 1) {
+            $url = call_user_func($linkgenerator, $page - 1);
+            $output .= '<li class="page-item">' .
+                    '<a href="' . $url . '" class="page-link">' .
+                    '<span aria-hidden="true">«</span>' .
+                    '<span class="sr-only">Previous</span>' .
+                    '</a>' .
+                    '</li>';
+        }
+        for ($p = $pagefrom; $p <= $pageto; $p++) {
+            $class = array("page-item");
+            $page === $p ? $class[] = "active" : null;
+            $link = call_user_func($linkgenerator, $p);
+            if ($page === $p) {
+                // Current page.
+                $output .= '<li class="page-item active"><a href="#" class="page-link">' . $p . '</a></li>';
+            } else {
+                $output .= '<li class="' . implode(" ", $class) . '">' .
+                        '<a class="page-link" href="' . $link . '">' . $p . '</a></li>';
+            }
+        }
+        if ($page < $maxpage) {
+            $url = call_user_func($linkgenerator, $page + 1);
+            $output .= '<li class="page-item">' .
+                    '<a href="' . $url . '" class="page-link">' .
+                    '<span aria-hidden="true">»</span>' .
+                    '<span class="sr-only">Next</span>' .
+                    '</a>' .
+                    '</li>';
+        }
+        return $output . "</div>";
     }
 }

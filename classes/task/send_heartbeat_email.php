@@ -17,7 +17,6 @@
 namespace block_disk_quota\task;
 use block_disk_quota\usage\quota_manager;
 
-
 class send_heartbeat_email extends \core\task\scheduled_task {
     public function get_name() {
         return get_string('task_send_heartbeat_email', 'block_disk_quota');

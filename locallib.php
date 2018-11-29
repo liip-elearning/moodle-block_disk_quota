@@ -30,11 +30,13 @@ class admin_setting_email_list_custom extends admin_setting_configtext {
         $data = trim($data, " ,\t\n\r\0\x0B");
         return parent::write_setting($data);
     }
+
     /**
      * Validate that there is an empty string or a comma-separated list of valid email addresses.
      *
      * @param $data
      * @return mixed true if validation is OK, error message string otherwise
+     * @throws coding_exception
      */
     public function validate($data) {
         $localdata = str_replace(' ', '', $data);
