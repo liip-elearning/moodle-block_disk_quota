@@ -21,7 +21,7 @@
  * @copyright 201 Liip AG {@link http://liip.ch}
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-namespace mod_disk_quota\plugininfo;
+namespace block_disk_quota\plugininfo;
 
 use core\plugininfo\block;
 
