@@ -16,6 +16,16 @@
 }}
 {{!
     @template block_disk_quota/current_usage
+
+    Context variables required for this template:
+      * overview - HTML Overview
+      * detail - HTML Detail
+
+    Example context (json):
+    {
+        "overview": "...",
+        "detail": "..."
+    }
 }}
 <div class="disk_quota_usage_detail">
     <div class="overview">

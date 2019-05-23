@@ -16,6 +16,7 @@
 
 namespace block_disk_quota\usage;
 
+defined('MOODLE_INTERNAL') || die();
 /**
  * Class InternalSpaceUsage
  *

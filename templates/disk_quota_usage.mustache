@@ -16,6 +16,15 @@
 }}
 {{!
     @template block_disk_quota/disk_quota_usage
+
+    Context variables required for this template:
+      * classes - CSS classes
+      * space_used - HTML
+    Example context (json):
+    {
+        "classes": "text-danger",
+        "space_used": "<b>90% used</b>"
+    }
 }}
 <div class="disk_quota_usage {{{ classes }}}">
     {{{ space_used }}}

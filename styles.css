@@ -1,28 +1,38 @@
 .block_recent_activity .activitydate,
-.block_recent_activity .activityhead {text-align:center;}
-.block_recent_activity .unlist li {margin-bottom:1em;}
-.block_recent_activity li .head .date  {float:right;}
+.block_recent_activity .activityhead {
+    text-align: center;
+}
 
-.dir-rtl .block_recent_activity .content h3 {text-align: right;}
+.block_recent_activity .unlist li {
+    margin-bottom: 1em;
+}
+
+.block_recent_activity li .head .date {
+    float: right;
+}
+
+.dir-rtl .block_recent_activity .content h3 {
+    text-align: right;
+}
 
 .disk_quota_activeusers_usage,
 .disk_quota_usage {
-  padding: 1rem;
-  margin-bottom: 1rem;
-  border: 1px solid #d0e9c6;
-  border-radius: .25rem;
-  background-color: #dff0d8;
-  color: #3c763d;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid #d0e9c6;
+    border-radius: .25rem;
+    background-color: #dff0d8;
+    color: #3c763d;
 }
 
 .disk-quota--warning {
-  background-color: #fcf8e3;
-  border-color: #faf2cc;
-  color: #8a6d3b;
+    background-color: #fcf8e3;
+    border-color: #faf2cc;
+    color: #8a6d3b;
 }
 
 .disk-quota--danger {
-  background-color: #f2dede;
-  border-color: #ebcccc;
-  color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebcccc;
+    color: #a94442;
 }

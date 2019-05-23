@@ -16,6 +16,8 @@
 
 namespace block_disk_quota\usage;
 
+defined('MOODLE_INTERNAL') || die();
+
 class space_usage {
     /**
      * @var array of space_usage_interface-implementing instances
@@ -36,7 +38,6 @@ class space_usage {
     public function total_used() {
         $total = 0.0;
         foreach ($this->usagecollectors as $collector) {
-            /* @var $collector space_usage_interface */
             $total += $collector->get_total_used();
         }
         return $total;
@@ -53,7 +54,6 @@ class space_usage {
 
         // Sum up the values from all collectors.
         foreach ($this->usagecollectors as $collector) {
-            /* @var $collector space_usage_interface */
             $detail = $collector->get_usage_details();
             $details['total_gb'] += $detail['total_gb'];
             $breakdown = $detail['breakdown'];

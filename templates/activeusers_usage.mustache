@@ -16,6 +16,16 @@
 }}
 {{!
     @template block_disk_quota/activeusers_usage
+
+     Context variables required for this template:
+      * classes: HTML Classes
+      * active_users: HTML
+
+    Example context (json):
+    {
+      "classes": "text-danger",
+      "active_users": "<b>More that 3000</b>"
+    }
 }}
 <div class="disk_quota_activeusers_usage {{{ classes }}}">
     {{{ active_users }}}

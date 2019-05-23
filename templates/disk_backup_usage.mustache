@@ -16,6 +16,18 @@
 }}
 {{!
     @template block_disk_quota/disk_quota_usage_line
+
+    Context variables required for this template:
+      * data: Array of HTML content with td around
+
+    Example context (json):
+    {
+      "data": [
+        "<td>files 1</td></td>course 1</td><td>timemodified 1</td><td>size 1</td>",
+        "<td>files 2</td></td>course 2</td><td>timemodified 2</td><td>size 2</td>"
+        ]
+    }
+
 }}
 <div class="disk_backup_usage">
     <table width="100%">

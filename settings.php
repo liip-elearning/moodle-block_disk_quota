@@ -24,10 +24,9 @@
 
 use block_disk_quota\admin\admin_setting_email_list_custom;
 
-require_once($CFG->libdir . '/adminlib.php');
-
 defined('MOODLE_INTERNAL') || die;
 
+require_once($CFG->libdir . '/adminlib.php');
 
 if ($ADMIN->fulltree) {
     $gb = array_merge(range(0, 9),  range(10, 300, 5));

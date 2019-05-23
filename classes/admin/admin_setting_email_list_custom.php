@@ -18,6 +18,8 @@ namespace block_disk_quota\admin;
 
 use admin_setting_configtext;
 
+defined('MOODLE_INTERNAL') || die();
+
 global $CFG;
 require_once($CFG->libdir . '/adminlib.php');
 
