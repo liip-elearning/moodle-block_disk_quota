@@ -1,0 +1,249 @@
+<?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * Unit tests for blocks/disk_quota/classes/usage/quota_manager.php.
+ * This file try to test the quota calculation and maintenance mode only.
+ */
+
+namespace block_disk_quota\tests\usage;
+
+use advanced_testcase;
+use block_disk_quota\usage\quota_manager;
+
+defined('MOODLE_INTERNAL') || die();
+
+class quota_manager_calculation_test extends advanced_testcase {
+    protected function setUp() {
+        unset_config('noemailever');
+        set_config('enabled', 1, 'block_disk_quota');
+        set_config('overage_limit_gb', 2, 'block_disk_quota');
+        set_config('warn_when_within_gb_of_limit', 1, 'block_disk_quota');
+        set_config('last_measurement_reduction', "1997.01.01", 'block_disk_quota');
+        $this->resetAfterTest();
+    }
+
+    /**
+     * Test the total disk space used calculations.
+     */
+    public function test_get_total_disk_space_used() {
+        // By default, Moodle only setup 4 images.
+        $imagesize = $this->get_current_size_for_mime("image/%");
+        $quotamanager = new quota_manager();
+        $this->comparefloat($quotamanager->get_total_disk_space_used(), $imagesize);
+    }
+
+    /**
+     * Test the get_usage_details calculations with an empty setup.
+     */
+    public function test_get_usage_details_empty() {
+
+        $quotamanager = new quota_manager();
+        $usage = $quotamanager->get_usage_details();
+
+        $expected = [
+                "unknown" => 0,
+                "application" => 0,
+                "text" => 0,
+                "audio" => 0,
+                "document" => 0,
+                "image" => $this->get_current_size_for_mime("image/%"), // By default, Moodle only setup 4 images.
+                "video" => 0,
+                "backup" => 0
+        ];
+
+        $this->validate_usage($expected, $usage);
+    }
+
+    /**
+     * Test that the site goes in maintenance mode when needed.
+     */
+    public function test_block_site_if_hard_limit_exceeded_enable() {
+        global $CFG;
+        $file = "$CFG->dataroot/climaintenance.html";
+        $quotamanager = new quota_manager();
+
+        $this->assertEquals(false, file_exists($file));
+        // Put the site in maintenance.
+        $quotamanager->block_site_if_hard_limit_exceeded(8, 1);
+
+        // Be sure that the site stays in maintenance after a hard limit is not used anymore.
+        $quotamanager->block_site_if_hard_limit_exceeded(8, 10);
+
+        $this->assertEquals(true, file_exists($file));
+
+        if (file_exists($file)) {
+            unlink($file);
+        }
+
+    }
+
+    /**
+     * Test that the site doesn't go in maintenance mode when unneeded.
+     */
+    public function test_block_site_if_hard_limit_exceeded_disable() {
+        global $CFG;
+        $file = "$CFG->dataroot/climaintenance.html";
+
+        $t = new quota_manager();
+        $this->assertEquals(false, file_exists($file));
+        $t->block_site_if_hard_limit_exceeded(8, 10);
+        $this->assertEquals(false, file_exists($file));
+    }
+
+    /**
+     * Test the current quota calculations for backups.
+     */
+    public function test_get_usage_details_provider() {
+        return [
+                ["application/vnd.moodle.backup", "backup", rand(1, 8)],
+                ["application/json", "application", rand(1, 8)],
+                ["video/mp4", "video", rand(1, 8)],
+                ["text/html", "text", rand(1, 8)],
+                ["audio/mp3", "audio", rand(1, 8)],
+                ["document/markdown", "document", rand(1, 8)]
+        ];
+    }
+
+    /**
+     * Test the current quota calculations for video.
+     *
+     * @dataProvider test_get_usage_details_provider
+     */
+    public function test_get_usage_details_generic($mime, $key, $size) {
+        $this->assert_usage_details_type($mime, $key, $size);
+    }
+
+    /**
+     * Test the current quota calculations for images.
+     */
+    public function test_get_usage_details_image() {
+        $image = $this->get_current_size_for_mime("image/%");
+        $this->assert_usage_details_type("image/jpeg", "image", 2, $image + 2);
+    }
+
+    /**
+     * Compare float safely (as 2 sames values may have a different precision).
+     *
+     * @param float $expected
+     * @param float $result
+     * @param string||null $message Message on failure.
+     */
+    protected function comparefloat($expected, $result, $message = null) {
+
+        if ($message === null) {
+            $message = "Invalid float comparaison. Expected $expected, got $result";
+        }
+
+        // Pre PHP 7.2 hack.
+        if (!defined("PHP_FLOAT_EPSILON")) {
+            define('PHP_FLOAT_EPSILON', 2.2204460492503e-16);
+        }
+
+        // Compare float according to PHP recommendations (https://stackoverflow.com/a/3149007).
+        $this->assertTrue(abs($expected - $result) < PHP_FLOAT_EPSILON, $message);
+    }
+
+    /**
+     * Insert a file in the database.
+     *
+     * @param int $filesize
+     * @param string $mimetype
+     * @return bool|int
+     */
+    protected function insert_record_file($filesize = 10000, $mimetype = "image/jpeg") {
+        global $DB;
+        $file = (object) [
+                "contenthash" => sha1(date("U") . "1" . rand(0, 99)),
+                "pathnamehash" => sha1(date("U") . "2" . rand(0, 99) . $mimetype),
+                "contextid" => 1,
+                "component" => "core",
+                "filearea" => "test",
+                "itemid" => 0,
+                "filepath" => "/",
+                "filename" => "test-" . date("U") . ".jpg",
+                "userid" => 1,
+                "filesize" => $filesize,
+                "mimetype" => $mimetype,
+                "status" => 0,
+                "source" => null,
+                "author" => null,
+                "license" => null,
+                "timecreated" => date("U"),
+                "timemodified" => date("U"),
+                "sortorder" => 0,
+                "referencefileid" => null
+        ];
+
+        return $DB->insert_record("files", $file);
+    }
+
+    /**
+     * Get the filesite for a specific mimetype using an SQL Like statement.
+     *
+     * @param string $mimetype
+     * @return float|int
+     */
+    private function get_current_size_for_mime($mimetype = 'image/%') {
+        global $DB;
+        $used = $DB->get_records_sql("SELECT sum(filesize) FROM {files} WHERE mimetype like ?", [$mimetype]);
+        $sum = array_shift($used)->sum;
+        return $sum / (1024 * 1024 * 1024);
+    }
+
+    /**
+     * Validate the get_usage_details result according to the specificed array.
+     * Compare only the required values.
+     *
+     * @param array $expected Expected result
+     * @param array $usage Current result
+     */
+    private function validate_usage(array $expected, array $usage) {
+        $this->assertArrayHasKey("total_gb", $usage);
+        $this->assertArrayHasKey("breakdown", $usage);
+        $breakdown = $usage["breakdown"];
+        foreach ($expected as $type => $expectedvalue) {
+            $this->assertArrayHasKey($type, $breakdown, "missing breakdown for $type");
+            $this->comparefloat($expectedvalue, $breakdown[$type],
+                    "Invalid value for $type. Expected: $expectedvalue, got " . $breakdown[$type]);
+        }
+    }
+
+    /**
+     * Assert that the calculation is working after adding a file. The file is not kept.
+     *
+     * @param string $mimetype Mimetype
+     * @param string $key The result key that will be checked.
+     * @param int $filesize Size of the file to insert (in GB)
+     * @param int|null $expectedsize If null, takes $filesize instead.
+     * @throws \dml_exception
+     */
+    protected function assert_usage_details_type($mimetype, $key, $filesize, $expectedsize = null) {
+        global $DB;
+        if ($expectedsize === null) {
+            $expectedsize = $filesize;
+        }
+        $recordid = $this->insert_record_file($filesize * 1024 * 1024 * 1024, $mimetype);
+        $t = new quota_manager();
+        $usage = $t->get_usage_details();
+        $expected = [$key => $expectedsize];
+        try {
+            $this->validate_usage($expected, $usage);
+        } finally {
+            $DB->delete_records("files", ["id" => $recordid]);
+        }
+    }
+}
