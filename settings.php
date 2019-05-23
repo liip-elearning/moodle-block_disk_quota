@@ -21,7 +21,10 @@
  * @copyright  2015 Liip AG
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-require_once(__DIR__.'/locallib.php');
+
+use block_disk_quota\admin\admin_setting_email_list_custom;
+
+require_once($CFG->libdir . '/adminlib.php');
 
 defined('MOODLE_INTERNAL') || die;
 
