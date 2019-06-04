@@ -36,3 +36,7 @@
     border-color: #ebcccc;
     color: #a94442;
 }
+
+.disk_backup_usage table.full {
+    width: 100%;
+}
