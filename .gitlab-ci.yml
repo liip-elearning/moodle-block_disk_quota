@@ -44,15 +44,16 @@ before_script:
 .job_template: &job_definition
   script:
     - EXIT_STATUS=0
-    - moodle-plugin-ci codechecker || EXIT_STATUS=$?
-    - moodle-plugin-ci phpunit || EXIT_STATUS=$?
     - moodle-plugin-ci phplint || EXIT_STATUS=$?
     - moodle-plugin-ci phpcpd || EXIT_STATUS=$?
     - moodle-plugin-ci phpmd || EXIT_STATUS=$?
-    - moodle-plugin-ci savepoints || EXIT_STATUS=$?
-    - moodle-plugin-ci mustache || EXIT_STATUS=$?
-    - moodle-plugin-ci grunt || EXIT_STATUS=$?
+    - moodle-plugin-ci codechecker || EXIT_STATUS=$?
     - moodle-plugin-ci validate || EXIT_STATUS=$?
+    - moodle-plugin-ci savepoints || EXIT_STATUS=$?
+#    - moodle-plugin-ci mustache || EXIT_STATUS=$?
+    - moodle-plugin-ci grunt || EXIT_STATUS=$?
+#    - moodle-plugin-ci phpdoc || EXIT_STATUS=$?
+    - moodle-plugin-ci phpunit || EXIT_STATUS=$?
     - moodle-plugin-ci behat || EXIT_STATUS=$?
     - exit $EXIT_STATUS
 
