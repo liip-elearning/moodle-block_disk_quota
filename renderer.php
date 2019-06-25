@@ -16,6 +16,8 @@
 
 use block_disk_quota\usage\quota_manager;
 
+defined('MOODLE_INTERNAL') || die();
+
 /**
  * disk_quota block renderer
  */

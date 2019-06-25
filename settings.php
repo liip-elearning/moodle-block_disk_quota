@@ -21,10 +21,12 @@
  * @copyright  2015 Liip AG
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-require_once(__DIR__.'/locallib.php');
+
+use block_disk_quota\admin\admin_setting_email_list_custom;
 
 defined('MOODLE_INTERNAL') || die;
 
+require_once($CFG->libdir . '/adminlib.php');
 
 if ($ADMIN->fulltree) {
     $gb = array_merge(range(0, 9),  range(10, 300, 5));

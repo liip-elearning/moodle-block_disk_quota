@@ -16,6 +16,20 @@
 }}
 {{!
     @template block_disk_quota/current_usage
+
+    Context variables required for this template:
+      * usage: HTML
+      * activeusers: HTML
+      * url: string link URL
+      * link_text: string link text
+
+    Example context (json):
+    {
+      "usage": "...",
+      "activeusers": "<b>More that 3000</b>",
+      "url": "/course/admin.php?id=3",
+      "link_text": "View more"
+    }
 }}
 {{{ usage }}}
 {{{ activeusers }}}

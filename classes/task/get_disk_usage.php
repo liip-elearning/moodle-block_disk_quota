@@ -16,8 +16,11 @@
 
 namespace block_disk_quota\task;
 use block_disk_quota\usage\quota_manager;
+use core\task\scheduled_task;
 
-class get_disk_usage extends \core\task\scheduled_task {
+defined('MOODLE_INTERNAL') || die();
+
+class get_disk_usage extends scheduled_task {
 
     public function get_name() {
         return get_string('task_get_disk_usage', 'block_disk_quota');
@@ -56,6 +59,7 @@ class get_disk_usage extends \core\task\scheduled_task {
 
     public function set_disabled($disabled) {
         // No-op.
+        $disabled;
     }
 
     public function get_disabled() {

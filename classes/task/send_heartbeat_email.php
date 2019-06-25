@@ -16,8 +16,11 @@
 
 namespace block_disk_quota\task;
 use block_disk_quota\usage\quota_manager;
+use core\task\scheduled_task;
 
-class send_heartbeat_email extends \core\task\scheduled_task {
+defined('MOODLE_INTERNAL') || die();
+
+class send_heartbeat_email extends scheduled_task {
     public function get_name() {
         return get_string('task_send_heartbeat_email', 'block_disk_quota');
     }
@@ -37,6 +40,7 @@ class send_heartbeat_email extends \core\task\scheduled_task {
 
     public function set_disabled($disabled) {
         // No-op.
+        $disabled;
     }
 
     public function get_disabled() {

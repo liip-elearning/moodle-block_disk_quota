@@ -14,6 +14,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+namespace block_disk_quota\admin;
+
+use admin_setting_configtext;
+
+defined('MOODLE_INTERNAL') || die();
+
+global $CFG;
 require_once($CFG->libdir . '/adminlib.php');
 
 class admin_setting_email_list_custom extends admin_setting_configtext {
@@ -26,7 +33,7 @@ class admin_setting_email_list_custom extends admin_setting_configtext {
      * @return mixed|string
      */
     public function write_setting($data) {
-        $data = (string)$data;
+        $data = (string) $data;
         $data = trim($data, " ,\t\n\r\0\x0B");
         return parent::write_setting($data);
     }
@@ -47,7 +54,7 @@ class admin_setting_email_list_custom extends admin_setting_configtext {
         foreach ($addresses as $i => $address) {
             try {
                 validate_param($address, PARAM_EMAIL);
-            } catch (invalid_parameter_exception $e) {
+            } catch (\invalid_parameter_exception $e) {
                 return get_string('err_invalid_email_address', 'block_disk_quota', $i + 1);
             }
         }

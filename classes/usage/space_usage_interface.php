@@ -16,6 +16,8 @@
 
 namespace block_disk_quota\usage;
 
+defined('MOODLE_INTERNAL') || die();
+
 interface space_usage_interface {
     /**
      * @return array with following structure:

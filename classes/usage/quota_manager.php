@@ -16,6 +16,8 @@
 
 namespace block_disk_quota\usage;
 
+defined('MOODLE_INTERNAL') || die();
+
 class quota_manager {
 
     protected $spaceusage;
@@ -106,8 +108,8 @@ class quota_manager {
      */
     protected function fake_user_from_bare_email_address($email) {
         $user = new \stdClass;
-        foreach (get_all_user_name_fields() as $field => $ignore) {
-            $user->$field = '';
+        foreach (array_keys(get_all_user_name_fields()) as $field) {
+            $user->{$field} = '';
         }
         $user->firstname = explode('@', $email)[0];
         $user->lastname = '.';

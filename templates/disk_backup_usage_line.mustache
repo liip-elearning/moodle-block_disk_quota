@@ -16,6 +16,24 @@
 }}
 {{!
     @template block_disk_quota/disk_quota_usage
+
+    Context variables required for this template:
+      * id - id
+      * filename - string
+      * course_url - string
+      * course_name - string
+      * timemodified - int
+      * filesize - string
+
+    Example context (json):
+    {
+      "id": 12,
+      "filename": "sample.zip",
+      "course_url": "/course/view.php?id=2",
+      "course_name": "Test course",
+      "timemodified": 1558708626,
+      "filesize": "23 Gb"
+    }
 }}
 <td id="line_{{id}}">
     <i>{{filename}}</i>
