@@ -64,11 +64,12 @@ class quota_manager {
         global $DB;
         $a = new \stdClass;
         $a->quota = get_config('block_disk_quota', 'quota_activeusers');
+        $lastyear = strtotime("-1 year", time());
         $a->activeusers = $DB->get_field_sql("
-            SELECT count('x')
+            SELECT count(*)
               FROM {user}
-             WHERE lastaccess > extract(epoch from now() - INTERVAL '1 year')
-        ");
+             WHERE lastaccess > :lastyear
+        ", array('lastyear' => $lastyear));
         return $a;
     }
 

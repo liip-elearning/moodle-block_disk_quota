@@ -26,47 +26,55 @@ class internal_space_usage implements space_usage_interface {
     public function get_usage_details() {
         global $DB;
         $gigabyte = 1024 * 1024 * 1024;
-        $used = $DB->get_records_sql("
-            SELECT mimetype, sum(sum) / ? AS gb_used FROM (
-                SELECT iq.mimetype, SUM(iq.filesize) FROM (
-                        SELECT filesize,
-                               regexp_replace(
-                                   replace(mimetype, 'application/vnd.moodle.backup', 'backup'),
-                                   '/.+\$',
-                                   ''
-                               ) AS mimetype FROM {files}
-                        WHERE filesize > 0
-                        GROUP BY filesize,
-                                 regexp_replace(
-                                     replace(mimetype, 'application/vnd.moodle.backup', 'backup'),
-                                     '/.+\$',
-                                     ''
-                                 ), contenthash) iq
-                GROUP BY iq.mimetype
-                UNION VALUES
-                    ('audio',0),
-                    ('backup',0),
-                    ('document',0),
-                    ('application',0),
-                    ('video',0),
-                    ('image',0),
-                    ('text', 0)
-            ) as dropzeros
-            GROUP BY dropzeros.mimetype
-        ", array($gigabyte));
 
-        $total = 0;
-        $breakdown = array();
+        $used = $DB->get_records_sql("
+            SELECT
+                files.mimetype,
+                SUM(files.filesize) as size
+            FROM (
+                SELECT
+                    mimetype,
+                    filesize
+                FROM {files}
+                WHERE filesize > 0
+                GROUP BY
+                    mimetype,
+                    filesize,
+                    contenthash
+            ) files
+            GROUP BY files.mimetype
+        ");
+
+        $gbtotal = 0;
+        $breakdown = array(
+            'audio' => 0,
+            'application' => 0,
+            'backup' => 0,
+            'document' => 0,
+            'image' => 0,
+            'text' => 0,
+            'unknown' => 0,
+            'video' => 0
+        );
 
         foreach ($used as $record) {
-            $total += $record->gb_used;
-            $breakdown[$record->mimetype] = $record->gb_used;
+            $gbsize = $record->size / $gigabyte;
+            $gbtotal += $gbsize;
+
+            $explodedmimetype = explode("/", $record->mimetype);
+            $mimetype = $explodedmimetype[0];
+            $mimesubtype = $explodedmimetype[1];
+
+            // Exctract vnd.moodle.backup subtype from application mimetype.
+            if ($mimesubtype === 'vnd.moodle.backup') {
+                $breakdown['backup'] += $gbsize;
+            } else {
+                $breakdown[$mimetype] += $gbsize;
+            }
         }
-        if (!isset($breakdown['unknown'])) {
-            $breakdown['unknown'] = 0;
-        }
+
         return array(
-            'total_gb' => $total,
+            'total_gb' => $gbtotal,
             'breakdown' => $breakdown
         );
     }
