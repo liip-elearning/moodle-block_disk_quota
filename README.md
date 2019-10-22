@@ -52,6 +52,10 @@ This will prevent these settings from being changed by anyone that doesn't have 
 After having placed the ``disk_quota`` directory in the Moodle's ``blocks/`` directory, visit
 ``/admin/index.php`` or run the CLI upgrade script to install the plugin.
 
+## Uninstall
+This plugin cannot be removed by the admin interface.
+In order to bypass this, you can comment the ``xmldb_block_disk_quota_uninstall`` function in ``db/uninstall.php``.
+
 ## Usage
 By default, only admin users can add a disk usage block, or view an existing
 disk usage block or the disk usage details page.  To change this, change the
