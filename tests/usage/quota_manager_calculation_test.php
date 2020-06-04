@@ -203,7 +203,7 @@ class quota_manager_calculation_test extends advanced_testcase {
         global $DB;
         $used = $DB->get_records_sql("SELECT sum(filesize) FROM {files} WHERE mimetype like ?", [$mimetype]);
         $sum = array_shift($used)->sum;
-        return $sum / (1024 * 1024 * 1024);
+        return $sum / (1000 * 1000 * 1000);
     }
 
     /**
@@ -238,7 +238,7 @@ class quota_manager_calculation_test extends advanced_testcase {
         if ($expectedsize === null) {
             $expectedsize = $filesize;
         }
-        $recordid = $this->insert_record_file($filesize * 1024 * 1024 * 1024, $mimetype);
+        $recordid = $this->insert_record_file($filesize * 1000 * 1000 * 1000, $mimetype);
         $t = new quota_manager();
         $usage = $t->get_usage_details();
         $expected = [$key => $expectedsize];

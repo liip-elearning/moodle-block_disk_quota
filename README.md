@@ -33,7 +33,7 @@ In config.php, define ``$CFG->forced_plugin_settings`` (or add to it, if already
 $CFG->forced_plugin_settings = array(
     'block_disk_quota'  => array(
         'enabled' => true, // Is 'false' by default
-        'quota_gb' => 50,  // Quota allocated for the entire Moodle
+        'quota_gb' => 50,  // Quota allocated for the entire Moodle in GB (GigaBytes, 1000^3 bytes)
         'warn_when_within_gb_of_limit' => 5,  // When within this many GB of limit, start sending warning mails
         'overage_limit_gb' => 5,  // How many GB over the limit to allow before auto-blocking the site
         'do_email_admins' => true,  // If true, all warning / site blocked mails will be sent to all admins
