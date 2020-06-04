@@ -52,13 +52,13 @@ if ($ADMIN->fulltree) {
         'block_disk_quota/warn_when_within_gb_of_limit',
         get_string('warn_when_within_gb_of_limit', 'block_disk_quota'),
         get_string('warn_when_within_gb_of_limit_desc', 'block_disk_quota'),
-        '5', $gbchoices));
+        '10', $gbchoices));
 
     $settings->add(new admin_setting_configselect(
         'block_disk_quota/overage_limit_gb',
         get_string('overage_limit_gb', 'block_disk_quota'),
         get_string('overage_limit_gb_desc', 'block_disk_quota'),
-        '5', $gbchoices));
+        '20', $gbchoices));
 
     $settings->add(new admin_setting_configcheckbox(
         'block_disk_quota/do_email_admins',
