@@ -66,11 +66,11 @@ class block_disk_quota_renderer extends plugin_renderer_base {
      * @return string
      */
     protected static function format_bytes($size, $precision = 2) {
-        $base = log($size, 1024);
+        $base = log($size, 1000);
 
-        $suffixes = array('o', 'Ko', 'Mo', 'Go', 'To');
+        $suffixes = array('B', 'KB', 'MB', 'GB', 'TB');
         $unit = floor($base);
-        return round(pow(1024, $base - floor($base)), $precision) . ' ' . $suffixes[$unit];
+        return round(pow(1000, $base - floor($base)), $precision) . ' ' . $suffixes[$unit];
     }
 
     /**

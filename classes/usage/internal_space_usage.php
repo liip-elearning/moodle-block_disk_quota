@@ -25,7 +25,7 @@ defined('MOODLE_INTERNAL') || die();
 class internal_space_usage implements space_usage_interface {
     public function get_usage_details() {
         global $DB;
-        $gigabyte = 1024 * 1024 * 1024;
+        $gigabyte = 1000 * 1000 * 1000;
 
         $used = $DB->get_records_sql("
             SELECT
@@ -82,7 +82,7 @@ class internal_space_usage implements space_usage_interface {
     public function get_total_used() {
         global $DB;
         $used = $DB->get_field_sql(
-            "select sum(filesize) / (1024 * 1024 * 1024)
+            "select sum(filesize) / (1000 * 1000 * 1000)
                from (select filesize from {files} group by filesize, contenthash) distinct_files");
 
         return $used === false ? 0 : $used;
