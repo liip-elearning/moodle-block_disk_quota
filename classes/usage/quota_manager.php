@@ -237,7 +237,7 @@ class quota_manager {
 
         $frequencyattribute = $this->notification_frequency_attribute($notificationtype);
         $now = time();
-        $duration = intval($settings->$frequencyattribute) * 24 * 60 * 60;
+        $duration = intval($settings->$frequencyattribute);
         $lastsent = intval($settings->$lastsentattribute);
 
         return $lastsent + $duration <= $now;

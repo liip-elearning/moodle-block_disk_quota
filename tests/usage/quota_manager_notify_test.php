@@ -58,7 +58,7 @@ class quota_manager_notify_test extends advanced_testcase {
         $sink = $this->redirectEmails();
         $date = new \DateTimeImmutable("now");
         set_config('notification_nearing_quota_sent_date', $date->modify("-1 hour")->format("U"), 'block_disk_quota');
-        set_config('nearing_quota_warn_email_frequency', 1, 'block_disk_quota');
+        set_config('nearing_quota_warn_email_frequency', 24 * 60 * 60, 'block_disk_quota');
 
         $quotamanager = new quota_manager();
         $quotamanager->notify_near_quota(0.9, get_config("block_disk_quota"));
@@ -74,7 +74,7 @@ class quota_manager_notify_test extends advanced_testcase {
         $date = new \DateTimeImmutable("now");
         set_config('notification_nearing_quota_sent_date', $date->modify("-1 day")->format("U"),
                 'block_disk_quota');
-        set_config('nearing_quota_warn_email_frequency', 1, 'block_disk_quota');
+        set_config('nearing_quota_warn_email_frequency',  24 * 60 * 60, 'block_disk_quota');
 
         $quotamanager = new quota_manager();
         $quotamanager->notify_near_quota(0.9, get_config("block_disk_quota"));
@@ -100,7 +100,7 @@ class quota_manager_notify_test extends advanced_testcase {
         $sink = $this->redirectEmails();
         $date = new \DateTimeImmutable("now");
         set_config('notification_over_quota_sent_date', $date->modify("-1 hour")->format("U"), 'block_disk_quota');
-        set_config('over_quota_warn_email_frequency', 1, 'block_disk_quota');
+        set_config('over_quota_warn_email_frequency',  24 * 60 * 60, 'block_disk_quota');
 
         $quotamanager = new quota_manager();
         $quotamanager->notify_over_quota(5.9, get_config("block_disk_quota"));
@@ -116,7 +116,7 @@ class quota_manager_notify_test extends advanced_testcase {
         $date = new \DateTimeImmutable("now");
         set_config('notification_over_quota_sent_date', $date->modify("-1 day")->format("U"),
                 'block_disk_quota');
-        set_config('over_quota_warn_email_frequency', 1, 'block_disk_quota');
+        set_config('over_quota_warn_email_frequency',  24 * 60 * 60, 'block_disk_quota');
 
         $quotamanager = new quota_manager();
         $quotamanager->notify_over_quota(5.9, get_config("block_disk_quota"));
