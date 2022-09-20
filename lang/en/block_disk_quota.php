@@ -68,54 +68,45 @@ $string['over_quota_warn_email_frequency'] = 'Over quota warn frequency';
 $string['over_quota_warn_email_frequency_desc'] = 'How often mails will be sent when the site has exceeded the quota';
 
 // Email strings.
+//P.T. 16.09.2022 [MDLSAAS-39]: replaced lang-strings for the notification email (subjects + body-texts) 
 $string['mail_nearing_quota_subject'] = 'Moodle site is nearing quota limit';
 $string['mail_nearing_quota_body'] =
-'Your Moodle site {$a->url} is currently using {$a->used} GB
-of the allocated {$a->quota} GB space for files.
+'Dear client,
+This email is a kind reminder that your Moodle site is nearing the limit of its data quota.
 
-If you need more disk space, please contact us asap to
-upgrade. Alternatively, we suggest that you reduce your disk
-usage by deleting unused data.
+Your Moodle site {$a->url} is currently using {$a->used} GB of the allocated {$a->quota} GB space for files.
 
-Now would be a good time to order more space, or to reduce
-your space used.
+If you need more disk space, you can contact us directly via maas@liip.ch. 10 GB extra storage space costs CHF 30,- per year.
 
-If your Moodle goes too far over the disk space limit, it will
-be automatically put into maintenance mode and will be unavailable
-for users.
+
+Alternatively, we suggest that you reduce your disk usage by deleting unused data (e.g. unused files or course backups).
+
 
 {$a->signature}
 ';
 
-$string['mail_over_quota_subject'] = 'Moodle site has exceeded quota limit';
+//P.T. 16.09.2022 [MDLSAAS-39]: replaced lang-strings for the notification email (subjects + body-texts)
+$string['mail_over_quota_subject'] = 'Important: Moodle site has exceeded disk quota limit';
 $string['mail_over_quota_body'] =
-'Your Moodle site {$a->url} is currently using {$a->used} GB
-of the allocated {$a->quota} GB space for files.
+'Dear client,
+This email is a kind reminder that your Moodle site has already exceeded the limit of its data quota.
 
-Please contact us immediately to upgrade. You may either order
-more disk space, or reduce disk usage by deleting unused data.
+Your Moodle site {$a->url} is currently using {$a->used} GB of the allocated {$a->quota} GB space for files.
 
-If your Moodle goes too far over the disk space limit, it will
-be automatically put into maintenance mode and will be unavailable
-for users.
+Please contact us immediately to upgrade. In order to avoid automatic maintenance of your site, you may either order
+more disk space, or reduce disk usage by deleting unused data immediately (e.g. unused files or course backups).
+
+
+If you need more disk space, you can contact us directly via maas@liip.ch. 10 GB extra storage space costs CHF 30,- per year.
+
 
 {$a->signature}
 ';
 
+/***P.T. 16.09.2022 [MDLSAAS-39]: removed lang-strings for the following notification email:
 $string['mail_site_blocked_subject'] = 'Important: Moodle site has been disabled due to excessive disk usage';
 $string['mail_site_blocked_body'] =
-'Your Moodle site {$a->url} is currently using {$a->used} GB
-of the allocated {$a->quota} GB space for files.
-
-You have received several warnings mails requesting you to upgrade
-your Moodle hosting plan. With no feedback from your side, your
-Moodle instance has been deactivated automatically in order to avoid
-impact on our infrastructure and other hosted projects.
-
-Please contact us immediately to find a solution.
-
-{$a->signature}
-';
+*/
 
 $string['mail_signature'] = 'With friendly greetings,
 The Liip Elearning Team

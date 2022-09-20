@@ -58,56 +58,43 @@ $string['over_quota_warn_email_frequency'] = 'Frequenz für Speicherplatz-Übers
 $string['over_quota_warn_email_frequency_desc'] = 'Wie häufig Emails gesendet werden, wenn die Speicherplatz-Limite überschritten ist';
 
 // Email strings.
+//P.T. 16.09.2022 [MDLSAAS-39]: replaced lang-strings for the notification email (subjects + body-texts)
 $string['mail_nearing_quota_subject'] = 'Moodle-Instanz nähert sich dem Limit der Speicherplatz-Auslastung';
 $string['mail_nearing_quota_body'] =
-'Ihre Moodle-Instanz {$a->url} nutzt aktuell {$a->used} GB
-des zugewiesenen Speicherplatzes von {$a->quota} GB für Dateien.
+'Verehrte Kundin, verehrter Kunde,
+mit dieser E-Mail möchten wir Sie gerne darauf hinweisen, dass Ihre Moodle-Website bald ihr Datenkontingent ausgeschöpft haben wird.
 
-Falls Sie mehr Speicherplatz benötigen, kontaktieren Sie uns bitte
-umgehend. Alternativ empfehlen wir Ihnen, benutzten Speicherplatz
-freizugeben, indem Sie nicht benötigte Dateien löschen.
+Ihre Moodle-Website {$a->url} verbraucht derzeit {$a->used} GB des zugewiesenen {$a->quota} GB Speicherplatzes für Dateien.
 
-Jetzt wäre der richtige Zeitpunkt, um mehr Speicherplatz zu bestellen,
-oder alte Dateien zu löschen.
+Wenn Sie mehr Speicherplatz benötigen, können Sie uns gerne direkt über maas@liip.ch kontaktieren. 10 GB an zusätzlichem Speicherplatz kosten CHF 30,- pro Jahr.
 
-Falls der zugewiesene Speicherplatz zu stark überschritten wird, wird
-Ihre Moodle-Instanz automatisch in den Wartungs-Modus versetzt und ist
-für die Benutzer nicht mehr verfügbar.
+
+Alternativ empfehlen wir Ihnen, Ihren Speicherplatz zu reduzieren, indem Sie ungenutzte Dateien oder nicht mehr benötigte Kurs-Backups löschen.
+
 
 {$a->signature}
 ';
 
-$string['mail_over_quota_subject'] = 'Moodle-Instanz hat die Limite der Speicherplatz-Auslastung überschritten';
+$string['mail_over_quota_subject'] = 'Wichtig: Moodle-Instanz hat das Limit der Speicherplatz-Auslastung überschritten';
 $string['mail_over_quota_body'] =
-'Ihre Moodle-Instanz {$a->url} nutzt aktuell {$a->used} GB
-des zugewiesenen Speicherplatzes von {$a->quota} GB für Dateien.
+'Verehrte Kundin, verehrter Kunde,
+mit dieser E-Mail möchten wir Sie gerne darauf hinweisen, dass Ihre Moodle-Website das vorgesehene Datenkontingent bereits ausgeschöpft hat und damit das Limit der Speicherplatz-Auslastung überschritten ist.
 
-Bitte kontaktieren Sie uns umgehend, für eine Erhöhung des
-Speicherplatzes. Sie können entweder mehr Speicherplatz bestellen,
-oder unbenutzte Dateien löschen.
+Ihre Moodle-Website {$a->url} verbraucht derzeit {$a->used} GB des zugewiesenen {$a->quota} GB Speicherplatzes für Dateien.
 
-Falls der zugewiesene Speicherplatz zu stark überschritten wird, wird
-Ihre Moodle-Instanz automatisch in den Wartungs-Modus versetzt und ist
-für die Benutzer nicht mehr verfügbar.
+Bitte kontaktieren Sie uns umgehend für ein Upgrade.
+Um eine automatische Wartung Ihrer Moodle-Seite zu vermeiden, können Sie entweder mehr Speicherplatz bestellen oder den Speicherplatzverbrauch reduzieren, indem Sie beispielsweise ungenutzte Dateien oder nicht mehr benötigte Kurs-Backups löschen.
+
+Wenn Sie mehr Speicherplatz benötigen, können Sie uns gerne direkt über maas@liip.ch kontaktieren. 10 GB an zusätzlichem Speicherplatz kosten CHF 30.- pro Jahr.
+
 
 {$a->signature}
 ';
 
-$string['mail_site_blocked_subject'] = 'Wichtig: Moodle-Instanz deaktiviert wegen übermässigem Speicherplatz-Verbrauch';
+/***P.T. 16.09.2022 [MDLSAAS-39]: removed lang-strings for the following notification email:
+$string['mail_site_blocked_subject'] = 'Important: Moodle site has been disabled due to excessive disk usage';
 $string['mail_site_blocked_body'] =
-'Ihre Moodle-Instanz {$a->url} nutzt aktuell {$a->used} GB
-des zugewiesenen Speicherplatzes von {$a->quota} GB für Dateien.
-
-Sie haben bereits mehrere Warnung per Email erhalten, mit der Bitte,
-mehr Speicherplatz für Ihr Moodle zu bestellen. Ohne Feedback von Ihnen
-wurde Ihre Moodle-Instanz automatisch deaktiviert, um negative
-Auswirkungen auf unsere Infrastruktur und andere Kunden zu verhindern.
-
-Bitte kontaktieren Sie uns schnellstmöglich, damit wir gemeinsam eine
-Lösung finden können.
-
-{$a->signature}
-';
+*/
 
 $string['mail_signature'] = 'Mit freundlichen Grüssen
 Liip Elearning Team
