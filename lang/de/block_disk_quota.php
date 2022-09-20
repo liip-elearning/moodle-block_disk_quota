@@ -92,7 +92,7 @@ Wenn Sie mehr Speicherplatz benötigen, können Sie uns gerne direkt über maas@
 ';
 
 /***P.T. 16.09.2022 [MDLSAAS-39]: removed lang-strings for the following notification email:
-$string['mail_site_blocked_subject'] = 'Important: Moodle site has been disabled due to excessive disk usage';
+$string['mail_site_blocked_subject'] = 'Wichtig: Moodle-Instanz deaktiviert wegen übermässigem Speicherplatz-Verbrauch';
 $string['mail_site_blocked_body'] =
 */
 

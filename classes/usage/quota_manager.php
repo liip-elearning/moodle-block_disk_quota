@@ -72,13 +72,14 @@ class quota_manager {
         ", array('lastyear' => $lastyear));
         return $a;
     }
-
+// P.T. 20-09-2022, [MDLSAAS-39]: deactivated automatic blockage of a moodle-site and activation of maintenance-mode when disk-quota exceeded
     public function block_site_if_hard_limit_exceeded($used, $hardlimit) {
         global $CFG;
         $blocksite = $used >= $hardlimit;
         if ($blocksite) {
-            $CFG->maintenance_message = get_string('site_blocked_maintenance_message', 'block_disk_quota');
-            enable_cli_maintenance_mode();
+          $CFG->maintenance_message = get_string('site_blocked_maintenance_message', 'block_disk_quota');
+//            $CFG->maintenance_message = get_string('site_blocked_maintenance_message', 'block_disk_quota');
+//            enable_cli_maintenance_mode();
         }
         return $blocksite;
     }
@@ -120,6 +121,9 @@ class quota_manager {
         return $user;
     }
 
+    //P.T. 20-09-2022, [MDLSAAS-39]: adjusted lang-strings + deactivated automatic site blockage when disk-quota exceeded
+    //replaced notification of "site_blocked" with "over_quota", wich informs that quota has been exceeded
+    //for changed lang-strings -> ../../lang/en/block_disk_quota.php (for en, fr, de)
     /**
      * Send notification that the site has been blocked.
      *
@@ -127,7 +131,8 @@ class quota_manager {
      * @param $settings
      */
     public function notify_site_blocked($used, $settings) {
-        $this->notify_if_necessary('site_blocked', $used, $settings);
+      $this->notify_if_necessary('over_quota', $used, $settings);
+//        $this->notify_if_necessary('site_blocked', $used, $settings);
     }
 
     /**
