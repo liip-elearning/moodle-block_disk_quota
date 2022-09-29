@@ -73,12 +73,17 @@ class quota_manager {
         return $a;
     }
 
+
+    // P.T. 29-09-2022, deactivated automatic blockage of a moodle-site and activation of maintenance-mode when disk-quota exceeded
+
     public function block_site_if_hard_limit_exceeded($used, $hardlimit) {
         global $CFG;
+        $settings = get_config('block_disk_quota');
         $blocksite = $used >= $hardlimit;
-        if ($blocksite) {
-            $CFG->maintenance_message = get_string('site_blocked_maintenance_message', 'block_disk_quota');
-            enable_cli_maintenance_mode();
+        if ($settings->block_site_enabled && $blocksite) {
+          $CFG->maintenance_message = get_string('site_blocked_maintenance_message', 'block_disk_quota');
+          require_once("$CFG->libdir/adminlib.php");
+          enable_cli_maintenance_mode();
         }
         return $blocksite;
     }
@@ -130,6 +135,8 @@ class quota_manager {
         $this->notify_if_necessary('site_blocked', $used, $settings);
     }
 
+
+    //P.T. 29-09-2022 updated noficication function for automatic site block enabled/disabled
     /**
      * Send notification that the site is over quoata, if a notification has not recently been sent.
      *
@@ -137,17 +144,28 @@ class quota_manager {
      * @param $settings
      */
     public function notify_over_quota($used, $settings) {
-        $this->notify_if_necessary('over_quota', $used, $settings);
+      if ($settings->enabled && $settings->block_site_enabled) {
+            $this->notify_if_necessary('over_quota', $used, $settings);
+      } else if ($settings->enabled) {
+            $this->notify_if_necessary('over_quota_noblock', $used, $settings);
+       }
     }
 
+
+    //P.T. 29-09-2022 updated noficication function for automatic site block disabled/disabled
     /**
      * Send notification that the site is nearing the quota limit, if a notification has not recently been sent.
      * @param $used
      * @param $settings
      */
     public function notify_near_quota($used, $settings) {
-        $this->notify_if_necessary('nearing_quota', $used, $settings);
+        if ($settings->enabled && $settings->block_site_enabled) {
+            $this->notify_if_necessary('nearing_quota', $used, $settings);
+      } else if ($settings->enabled) {
+            $this->notify_if_necessary('nearing_quota_noblock', $used, $settings);
+      }
     }
+
 
     /**
      * Sends notification if necessary.  If notification is sent, the send date
@@ -226,6 +244,16 @@ class quota_manager {
      */
     protected function notification_needs_sending($notificationtype, $settings) {
         if ($notificationtype == 'site_blocked') {
+            return true;
+        }
+
+        //P.T. 29-ß9-2022 added notificationtype conditions for new option of disabled automatic side blockage
+        if ($notificationtype == 'over_quota_noblock') {
+            return true;
+        }
+
+        //P.T. 29-ß9-2022 added notificationtype conditions for new option of disabled automatic side blockage
+        if ($notificationtype == 'nearing_quota_noblock') {
             return true;
         }
 

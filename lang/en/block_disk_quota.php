@@ -38,6 +38,11 @@ $string['task_send_heartbeat_email'] = 'Send a heartbeat email to check email tr
 // Settings strings.
 $string['enabled'] = 'Enabled';
 $string['enabled_desc'] = 'Whether the disk quota check is enforced';
+
+//P.T. 29-09-2022: additional strings for 'block_site_enabled' and 'block_site_enabled_desc'
+$string['block_site_enabled'] = 'Block site automatically';
+$string['block_site_enabled_desc'] = 'Whether the automatic site blockage is enabled in case of exceeding disk quota beyond the allowed limit ovarage';
+
 $string['quota_gb'] = 'Disk Quota';
 $string['quota_gb_desc'] = 'Disk Quota in gigabytes';
 $string['quota_activeusers'] = 'Active users Quota';
@@ -67,6 +72,12 @@ $string['nearing_quota_warn_email_frequency_desc'] = 'How often mails will be se
 $string['over_quota_warn_email_frequency'] = 'Over quota warn frequency';
 $string['over_quota_warn_email_frequency_desc'] = 'How often mails will be sent when the site has exceeded the quota';
 
+/*
+//P.T. 29-09-2022
+$string['over_quota_noblock_warn_email_frequency'] = '(noblock)Over quota warn frequency';
+$string['over_quota_noblock_warn_email_frequency_desc'] = '(noblock)How often mails will be sent when the site has exceeded the quota';
+*/
+
 // Email strings.
 $string['mail_nearing_quota_subject'] = 'Moodle site is nearing quota limit';
 $string['mail_nearing_quota_body'] =
@@ -87,6 +98,22 @@ for users.
 {$a->signature}
 ';
 
+//P.T. 29-09-2022 added changed lang-strings for notification messages when automatic stite block disabled
+$string['mail_nearing_quota_noblock_subject'] = 'Moodle site is nearing quota limit';
+$string['mail_nearing_quota_noblock_body'] =
+'Your Moodle site {$a->url} is currently using {$a->used} GB
+of the allocated {$a->quota} GB space for files.
+
+If you need more disk space, please contact us asap to
+upgrade. Alternatively, we suggest that you reduce your disk
+usage by deleting unused data.
+
+Now would be a good time to order more space, or to reduce
+your space used.
+
+{$a->signature}
+';
+
 $string['mail_over_quota_subject'] = 'Moodle site has exceeded quota limit';
 $string['mail_over_quota_body'] =
 'Your Moodle site {$a->url} is currently using {$a->used} GB
@@ -101,6 +128,20 @@ for users.
 
 {$a->signature}
 ';
+
+//P.T. 29-09-2022 added changed lang-strings for notification messages when automatic stite block disabled
+
+$string['mail_over_quota_noblock_subject'] = 'Important: Moodle site has exceeded quota limit';
+$string['mail_over_quota_noblock_body'] =
+'Your Moodle site {$a->url} is currently using {$a->used} GB
+of the allocated {$a->quota} GB space for files.
+
+Please contact us immediately to upgrade. You may either order
+more disk space, or reduce disk usage by deleting unused data.
+
+{$a->signature}
+';
+
 
 $string['mail_site_blocked_subject'] = 'Important: Moodle site has been disabled due to excessive disk usage';
 $string['mail_site_blocked_body'] =

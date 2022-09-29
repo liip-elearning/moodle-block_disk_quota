@@ -26,6 +26,8 @@ class get_disk_usage extends scheduled_task {
         return get_string('task_get_disk_usage', 'block_disk_quota');
     }
 
+
+//P.T. 29.09.2022 added conditions to have automatic site block optional ('block_site_enabled')
     public function execute() {
         $settings = get_config('block_disk_quota');
         $hardlimit = $settings->quota_gb + $settings->overage_limit_gb;
@@ -33,15 +35,26 @@ class get_disk_usage extends scheduled_task {
         $manager = new quota_manager();
         $used = $manager->get_total_disk_space_used();
         $manager->record_space_used($used, $settings->quota_gb);
-        if ($settings->enabled) {
-            if ($manager->block_site_if_hard_limit_exceeded($used, $hardlimit)) {
+        if ($settings->enabled && $settings->block_site_enabled) {
+            if ($used > $hardlimit) {
+                $manager->block_site_if_hard_limit_exceeded($used, $hardlimit);
                 $manager->notify_site_blocked($used, $settings);
-            } else if ($used >= $settings->quota_gb) {
+            } else if ($used > $settings->quota_gb) {
                 $manager->notify_over_quota($used, $settings);
             } else if ($used >= $warnlimit) {
                 $manager->notify_near_quota($used, $settings);
+              }
+        } else if ($settings->enabled) {
+          if ($used >= $hardlimit) {
+              $manager->notify_over_quota($used, $settings);
+          } else if ($used > $settings->quota_gb) {
+              $manager->notify_over_quota($used, $settings);
+          } else if ($used >= $warnlimit && $used <= $settings->quota_gb) {
+              $manager->notify_near_quota($used, $settings);
             }
-        }
+          }
+
+
 
         $today = date('Y.m.d', time());
         if (!isset($settings->last_measurement_reduction) or $settings->last_measurement_reduction != $today) {
