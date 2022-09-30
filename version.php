@@ -25,7 +25,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2020060400;         // The current plugin version (Date: YYYYMMDDXX).
+$plugin->version   = 2022093001;         // The current plugin version (Date: YYYYMMDDXX).
 $plugin->requires  = 2014051200;         // minimum: Moodle 2.7.
 $plugin->component = 'block_disk_quota'; // Full name of the plugin (used for diagnostics).
 $plugin->release   = '1.0';

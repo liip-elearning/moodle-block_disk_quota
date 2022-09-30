@@ -42,6 +42,13 @@ if ($ADMIN->fulltree) {
         get_string('enabled_desc', 'block_disk_quota'),
         0));
 
+    //P.T. 29-09-2022: added setting option for automatical site-blockage when hardlimit is reached
+    $settings->add(new admin_setting_configcheckbox(
+        'block_disk_quota/block_site_enabled',
+        get_string('block_site_enabled', 'block_disk_quota'),
+        get_string('block_site_enabled_desc', 'block_disk_quota'),
+        0));
+
     $settings->add(new admin_setting_configselect(
         'block_disk_quota/quota_gb',
         get_string('quota_gb', 'block_disk_quota'),
@@ -86,7 +93,8 @@ if ($ADMIN->fulltree) {
         get_string('over_quota_warn_email_frequency', 'block_disk_quota'),
         get_string('over_quota_warn_email_frequency_desc', 'block_disk_quota'),
         3 * 24 * 60 * 60
-    ));
+      ));
+
 
     $settings->add(new admin_setting_configtext(
         'block_disk_quota/support_telephone',

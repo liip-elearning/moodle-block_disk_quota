@@ -33,21 +33,26 @@ $string['gigabytes_used'] = 'GB benutzt';
 // Settings strings.
 $string['enabled'] = 'Aktivieren';
 $string['enabled_desc'] = 'Speicherplatz-Limite aktivieren';
+
+//P.T. 29-09-2022: additional strings for 'block_site_enabled' and 'block_site_enabled_desc'
+$string['block_site_enabled'] = 'Seite automatisch deaktivieren';
+$string['block_site_enabled_desc'] = 'Aktivierung der automatischen Seiten-Blockierung nach Überschreitung der Speicherplatz-Limite und nach Ausschöpfung des erlaubten Mehrverbrauchs an Gigabyte';
+
 $string['quota_gb'] = 'Speicherplatz-Limite';
 $string['quota_gb_desc'] = 'Speicherplatz-Limite in Gigabyte';
 $string['warn_when_within_gb_of_limit'] = 'Warnen wenn in der Nähe des Limits';
-$string['warn_when_within_gb_of_limit_desc'] = 'Eine Warnung an die definierten Benutzer senden, wenn die Speicherplatz-Auslastung innerhalb von X GB des Limits ist';
+$string['warn_when_within_gb_of_limit_desc'] = 'Eine Warnung an die definierten Benutzer*innen senden, wenn die Speicherplatz-Auslastung innerhalb von X GB des Limits ist';
 $string['overage_limit_gb'] = 'Erlaube die Überschreitung des Limits um';
-$string['overage_limit_gb_desc'] = 'Um wieviele Gigabytes das Limit der Speicherplatz-Auslastung überschritten werden darf, bevor die Seite automatisch deaktiviert wird.';
-$string['do_email_admins'] = 'Email an Administratoren versenden?';
-$string['do_email_admins_desc'] = 'Sollen alle Benutzer mit Administratoren-Rechten Warnungen und "Seite deaktiviert"-Benachrichtigungen erhalten?';
+$string['overage_limit_gb_desc'] = 'Um wie viele Gigabytes das Limits der Speicherplatz-Auslastung überschritten werden darf, bevor die Seite automatisch deaktiviert wird.';
+$string['do_email_admins'] = 'Email an Administrator*innen versenden?';
+$string['do_email_admins_desc'] = 'Sollen alle Benutzer*innen mit Administrator*innen-Rechten Warnungen und "Seite deaktiviert"-Benachrichtigungen erhalten?';
 $string['email_others'] = 'Weitere Email-Adressen';
 $string['email_others_desc'] = 'Weitere Email-Adressen, welche Benachrichtigungen erhalten. Mehrere Adressen '
     .'mit Komma separieren (user1@example.com, user2@example.org, user3@example.net)';
 
 $string['err_invalid_email_address'] = 'Die Email-Adresse an der Stelle {$a} ist keine gültige Email-Adresse';
 $string['site_blocked_maintenance_message'] = 'Die Seite ist zur Zeit nicht verfügbar, da die Speicherplatz-Limite erheblich überschritten wurde. '
-    .'Administrator: bitte kontaktieren Sie den Support, um das Problem zu lösen.';
+    .'Administrator*in: bitte kontaktieren Sie den Support, um das Problem zu lösen.';
 $string['support_telephone'] = 'Support Telefon';
 $string['support_telephone_desc'] = 'Support Telefonnummer für dringende Fälle';
 $string['support_email'] = 'Support-Email';
@@ -68,11 +73,27 @@ umgehend. Alternativ empfehlen wir Ihnen, benutzten Speicherplatz
 freizugeben, indem Sie nicht benötigte Dateien löschen.
 
 Jetzt wäre der richtige Zeitpunkt, um mehr Speicherplatz zu bestellen,
-oder alte Dateien zu löschen.
+oder um alte Dateien zu löschen.
 
 Falls der zugewiesene Speicherplatz zu stark überschritten wird, wird
 Ihre Moodle-Instanz automatisch in den Wartungs-Modus versetzt und ist
-für die Benutzer nicht mehr verfügbar.
+für die Benutzer*innen nicht mehr verfügbar.
+
+{$a->signature}
+';
+
+//P.T. 29-09-2022 added changed lang-strings for notification messages when automatic site block disabled
+$string['mail_nearing_quota_noblock_subject'] = 'Moodle-Instanz nähert sich dem Limit der Speicherplatz-Auslastung';
+$string['mail_nearing_quota_noblock_body'] =
+'Ihre Moodle-Instanz {$a->url} nutzt aktuell {$a->used} GB
+des zugewiesenen Speicherplatzes von {$a->quota} GB für Dateien.
+
+Falls Sie mehr Speicherplatz benötigen, kontaktieren Sie uns bitte
+umgehend. Alternativ empfehlen wir Ihnen, benutzten Speicherplatz
+freizugeben, indem Sie nicht benötigte Dateien löschen.
+
+Jetzt wäre der richtige Zeitpunkt, um mehr Speicherplatz zu bestellen,
+oder um alte Dateien zu löschen.
 
 {$a->signature}
 ';
@@ -88,7 +109,20 @@ oder unbenutzte Dateien löschen.
 
 Falls der zugewiesene Speicherplatz zu stark überschritten wird, wird
 Ihre Moodle-Instanz automatisch in den Wartungs-Modus versetzt und ist
-für die Benutzer nicht mehr verfügbar.
+für die Benutzer*innen nicht mehr verfügbar.
+
+{$a->signature}
+';
+
+//P.T. 29-09-2022 added changed lang-strings for notification messages when automatic site block disabled
+$string['mail_over_quota_noblock_subject'] = 'Wichtig: Moodle-Instanz hat die Limite der Speicherplatz-Auslastung überschritten';
+$string['mail_over_quota_noblock_body'] =
+'Ihre Moodle-Instanz {$a->url} nutzt aktuell {$a->used} GB
+des zugewiesenen Speicherplatzes von {$a->quota} GB für Dateien.
+
+Bitte kontaktieren Sie uns umgehend, für eine Erhöhung des
+Speicherplatzes. Sie können entweder mehr Speicherplatz bestellen,
+oder unbenutzte Dateien löschen.
 
 {$a->signature}
 ';
