@@ -41,18 +41,18 @@ $string['block_site_enabled_desc'] = 'Aktivierung der automatischen Seiten-Block
 $string['quota_gb'] = 'Speicherplatz-Limite';
 $string['quota_gb_desc'] = 'Speicherplatz-Limite in Gigabyte';
 $string['warn_when_within_gb_of_limit'] = 'Warnen wenn in der Nähe des Limits';
-$string['warn_when_within_gb_of_limit_desc'] = 'Eine Warnung an die definierten Benutzer senden, wenn die Speicherplatz-Auslastung innerhalb von X GB des Limits ist';
+$string['warn_when_within_gb_of_limit_desc'] = 'Eine Warnung an die definierten Benutzer*innen senden, wenn die Speicherplatz-Auslastung innerhalb von X GB des Limits ist';
 $string['overage_limit_gb'] = 'Erlaube die Überschreitung des Limits um';
-$string['overage_limit_gb_desc'] = 'Um wie viele Gigabytes das Limit der Speicherplatz-Auslastung überschritten werden darf, bevor die Seite automatisch deaktiviert wird.';
-$string['do_email_admins'] = 'Email an Administratoren versenden?';
-$string['do_email_admins_desc'] = 'Sollen alle Benutzer mit Administratoren-Rechten Warnungen und "Seite deaktiviert"-Benachrichtigungen erhalten?';
+$string['overage_limit_gb_desc'] = 'Um wie viele Gigabytes das Limits der Speicherplatz-Auslastung überschritten werden darf, bevor die Seite automatisch deaktiviert wird.';
+$string['do_email_admins'] = 'Email an Administrator*innen versenden?';
+$string['do_email_admins_desc'] = 'Sollen alle Benutzer*innen mit Administrator*innen-Rechten Warnungen und "Seite deaktiviert"-Benachrichtigungen erhalten?';
 $string['email_others'] = 'Weitere Email-Adressen';
 $string['email_others_desc'] = 'Weitere Email-Adressen, welche Benachrichtigungen erhalten. Mehrere Adressen '
     .'mit Komma separieren (user1@example.com, user2@example.org, user3@example.net)';
 
 $string['err_invalid_email_address'] = 'Die Email-Adresse an der Stelle {$a} ist keine gültige Email-Adresse';
 $string['site_blocked_maintenance_message'] = 'Die Seite ist zur Zeit nicht verfügbar, da die Speicherplatz-Limite erheblich überschritten wurde. '
-    .'Administrator: bitte kontaktieren Sie den Support, um das Problem zu lösen.';
+    .'Administrator*in: bitte kontaktieren Sie den Support, um das Problem zu lösen.';
 $string['support_telephone'] = 'Support Telefon';
 $string['support_telephone_desc'] = 'Support Telefonnummer für dringende Fälle';
 $string['support_email'] = 'Support-Email';
@@ -77,7 +77,7 @@ oder um alte Dateien zu löschen.
 
 Falls der zugewiesene Speicherplatz zu stark überschritten wird, wird
 Ihre Moodle-Instanz automatisch in den Wartungs-Modus versetzt und ist
-für die Benutzer nicht mehr verfügbar.
+für die Benutzer*innen nicht mehr verfügbar.
 
 {$a->signature}
 ';
@@ -109,7 +109,7 @@ oder unbenutzte Dateien löschen.
 
 Falls der zugewiesene Speicherplatz zu stark überschritten wird, wird
 Ihre Moodle-Instanz automatisch in den Wartungs-Modus versetzt und ist
-für die Benutzer nicht mehr verfügbar.
+für die Benutzer*innen nicht mehr verfügbar.
 
 {$a->signature}
 ';
