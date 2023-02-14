@@ -1,4 +1,5 @@
 <?php
+
 // This file is part of the blocks/disk_quota Moodle plugin
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -18,33 +19,38 @@ namespace block_disk_quota\usage;
 
 defined('MOODLE_INTERNAL') || die();
 
-class quota_manager {
-
+class quota_manager
+{
     protected $spaceusage;
 
-    public function __construct() {
+    public function __construct()
+    {
         // TODO: determine what collectors other than internal_space_usage should be used.
         $collectors = array(new internal_space_usage());
         $this->spaceusage = new space_usage($collectors);
     }
-    public function get_total_disk_space_used() {
+    public function get_total_disk_space_used()
+    {
         return $this->spaceusage->total_used();
     }
 
-    public function get_usage_details() {
+    public function get_usage_details()
+    {
         return $this->spaceusage->usage_details();
     }
 
-    public function record_space_used($used, $quota) {
+    public function record_space_used($used, $quota)
+    {
         global $DB;
-        $rec = new \stdClass;
+        $rec = new \stdClass();
         $rec->timemeasured = time();
         $rec->usedgb = $used;
         $rec->quotagb = $quota;
         $DB->insert_record('block_disk_quota_measurement', $rec);
     }
 
-    public static function get_quota_and_space_used_gb() {
+    public static function get_quota_and_space_used_gb()
+    {
         global $DB;
         $rows = $DB->get_records('block_disk_quota_measurement', null, 'id desc', '*', 0, 1);
         if (count($rows) > 0) {
@@ -53,16 +59,17 @@ class quota_manager {
         } else {
             $used = null;
         }
-        $a = new \stdClass;
+        $a = new \stdClass();
         $a->quota = get_config('block_disk_quota', 'quota_gb');
         $a->used = $used;
         $a->warn_limit = floatval(get_config('block_disk_quota', 'warn_when_within_gb_of_limit'));
         return $a;
     }
 
-    public static function get_activeusers_and_quota() {
+    public static function get_activeusers_and_quota()
+    {
         global $DB;
-        $a = new \stdClass;
+        $a = new \stdClass();
         $a->quota = get_config('block_disk_quota', 'quota_activeusers');
         $lastyear = strtotime("-1 year", time());
         $a->activeusers = $DB->get_field_sql("
@@ -73,7 +80,8 @@ class quota_manager {
         return $a;
     }
 
-    public function block_site_if_hard_limit_exceeded($used, $hardlimit) {
+    public function block_site_if_hard_limit_exceeded($used, $hardlimit)
+    {
         global $CFG;
         $blocksite = $used >= $hardlimit;
         if ($blocksite) {
@@ -83,7 +91,8 @@ class quota_manager {
         return $blocksite;
     }
 
-    protected function notification_users($settings) {
+    protected function notification_users($settings)
+    {
         if ($settings->do_email_admins) {
             // Throw away the user-id keys.
             $users = array_values(get_admins());
@@ -107,11 +116,20 @@ class quota_manager {
      * @param string $email
      * @return \stdClass user-like record
      */
-    protected function fake_user_from_bare_email_address($email) {
-        $user = new \stdClass;
-        foreach (array_keys(get_all_user_name_fields()) as $field) {
+    protected function fake_user_from_bare_email_address($email)
+    {
+        $user = new \stdClass();
+
+        // get_all_user_name_fields() deprecated since 3.11. Prefer \core_user\fields API
+        if (class_exists('\core_user\fields')) {
+            $name_fields = \core_user\fields::get_name_fields();
+        } else {
+            $name_fields = get_all_user_name_fields();
+        }
+        foreach (array_keys($name_fields) as $field) {
             $user->{$field} = '';
         }
+
         $user->firstname = explode('@', $email)[0];
         $user->lastname = '.';
         $user->email = $email;
@@ -126,7 +144,8 @@ class quota_manager {
      * @param $used
      * @param $settings
      */
-    public function notify_site_blocked($used, $settings) {
+    public function notify_site_blocked($used, $settings)
+    {
         $this->notify_if_necessary('site_blocked', $used, $settings);
     }
 
@@ -136,7 +155,8 @@ class quota_manager {
      * @param $used
      * @param $settings
      */
-    public function notify_over_quota($used, $settings) {
+    public function notify_over_quota($used, $settings)
+    {
         $this->notify_if_necessary('over_quota', $used, $settings);
     }
 
@@ -145,7 +165,8 @@ class quota_manager {
      * @param $used
      * @param $settings
      */
-    public function notify_near_quota($used, $settings) {
+    public function notify_near_quota($used, $settings)
+    {
         $this->notify_if_necessary('nearing_quota', $used, $settings);
     }
 
@@ -157,7 +178,8 @@ class quota_manager {
      * @param $used
      * @param $settings
      */
-    protected function notify_if_necessary($notificationtype, $used, $settings) {
+    protected function notify_if_necessary($notificationtype, $used, $settings)
+    {
         if ($this->notification_needs_sending($notificationtype, $settings)) {
             $this->send_notification_mails(
                 $notificationtype,
@@ -180,7 +202,8 @@ class quota_manager {
      * @param $mailvalues
      * @param $settings
      */
-    public function send_notification_mails($mailtype, $users, $mailvalues, $settings) {
+    public function send_notification_mails($mailtype, $users, $mailvalues, $settings)
+    {
         global $CFG;
         $noreply = \core_user::get_noreply_user();
         $subjectkey = 'mail_' . $mailtype . '_subject';
@@ -199,7 +222,8 @@ class quota_manager {
      *
      * @param $settings
      */
-    public function send_heartbeat_email($settings) {
+    public function send_heartbeat_email($settings)
+    {
         global $CFG;
         $toemail = $settings->heartbeat_email;
         if ($toemail !== \clean_param($toemail, PARAM_EMAIL)) {
@@ -211,7 +235,7 @@ class quota_manager {
                           $CFG->noreplyaddress;
         $noreply = $this->fake_user_from_bare_email_address($noreplyaddress);
         $subject = new \lang_string('mail_heartbeat_subject', 'block_disk_quota');
-        $mailvalues = new \stdClass;
+        $mailvalues = new \stdClass();
         $mailvalues->url = $CFG->wwwroot;
         $body = new \lang_string('mail_heartbeat_body', 'block_disk_quota', $mailvalues);
         email_to_user($user, $noreply, $subject->out(), $body->out());
@@ -224,7 +248,8 @@ class quota_manager {
      * @param $settings
      * @return bool
      */
-    protected function notification_needs_sending($notificationtype, $settings) {
+    protected function notification_needs_sending($notificationtype, $settings)
+    {
         if ($notificationtype == 'site_blocked') {
             return true;
         }
@@ -243,11 +268,13 @@ class quota_manager {
         return $lastsent + $duration <= $now;
     }
 
-    protected function notification_last_sent_attribute($notificationtype) {
+    protected function notification_last_sent_attribute($notificationtype)
+    {
         return 'notification_' . $notificationtype . '_sent_date';
     }
 
-    protected function notification_frequency_attribute($notificationtype) {
+    protected function notification_frequency_attribute($notificationtype)
+    {
         return $notificationtype . '_warn_email_frequency';
     }
 
@@ -259,23 +286,26 @@ class quota_manager {
      * @param $notificationtype
      * @param $settings
      */
-    protected function mark_notification_sent($notificationtype, $settings) {
+    protected function mark_notification_sent($notificationtype, $settings)
+    {
         $lastsentattribute = $this->notification_last_sent_attribute($notificationtype);
         $settings->$lastsentattribute = time();
         set_config($lastsentattribute, $settings->$lastsentattribute, 'block_disk_quota');
     }
 
-    protected function standard_mail_values($spaceused, $settings) {
+    protected function standard_mail_values($spaceused, $settings)
+    {
         global $CFG;
-        $a = new \stdClass;
+        $a = new \stdClass();
         $a->url = $CFG->wwwroot;
         $a->used = round(floatval($spaceused), 3);
         $a->quota = $settings->quota_gb;
         return $a;
     }
 
-    protected function mail_signature($lang, $settings) {
-        $a = new \stdClass;
+    protected function mail_signature($lang, $settings)
+    {
+        $a = new \stdClass();
         $a->supportemail = $settings->support_email;
         $a->supporttelephone = $settings->support_telephone;
         $signature = new \lang_string('mail_signature', 'block_disk_quota', $a);
@@ -289,14 +319,16 @@ class quota_manager {
      * case several smallest freespace measurements are the same for a single day, only one of these
      * will be kept.
      */
-    public function reduce_old_measurements() {
+    public function reduce_old_measurements()
+    {
         global $DB;
         $thirtydaysago = time() - (60 * 60 * 24 * 30);
         $days = array();
         $records = $DB->get_records_select(
             'block_disk_quota_measurement',
             'timemeasured < ? AND historic = 0',
-            array($thirtydaysago));
+            array($thirtydaysago)
+        );
         if (!$records) {
             return;
         }
@@ -319,7 +351,8 @@ class quota_manager {
         $DB->delete_records_select(
             'block_disk_quota_measurement',
             "timemeasured < ? AND historic = 0 AND id NOT IN ($keepidslist)",
-            array($thirtydaysago, $keepidslist));
+            array($thirtydaysago, $keepidslist)
+        );
 
         // Set the historic flag on the kept records, so that they will not be considered again by this method.
         $DB->execute("UPDATE {block_disk_quota_measurement} set historic=1 where id in ($keepidslist)");
