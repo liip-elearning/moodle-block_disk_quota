@@ -28,10 +28,6 @@ defined('MOODLE_INTERNAL') || die();
 
 class quota_manager_calculation_test extends advanced_testcase {
     protected function setUp() {
-        unset_config('noemailever');
-        set_config('enabled', 1, 'block_disk_quota');
-        set_config('overage_limit_gb', 2, 'block_disk_quota');
-        set_config('warn_when_within_gb_of_limit', 1, 'block_disk_quota');
         set_config('last_measurement_reduction', "1997.01.01", 'block_disk_quota');
         $this->resetAfterTest();
     }
@@ -66,42 +62,6 @@ class quota_manager_calculation_test extends advanced_testcase {
         ];
 
         $this->validate_usage($expected, $usage);
-    }
-
-    /**
-     * Test that the site goes in maintenance mode when needed.
-     */
-    public function test_block_site_if_hard_limit_exceeded_enable() {
-        global $CFG;
-        $file = "$CFG->dataroot/climaintenance.html";
-        $quotamanager = new quota_manager();
-
-        $this->assertEquals(false, file_exists($file));
-        // Put the site in maintenance.
-        $quotamanager->block_site_if_hard_limit_exceeded(8, 1);
-
-        // Be sure that the site stays in maintenance after a hard limit is not used anymore.
-        $quotamanager->block_site_if_hard_limit_exceeded(8, 10);
-
-        $this->assertEquals(true, file_exists($file));
-
-        if (file_exists($file)) {
-            unlink($file);
-        }
-
-    }
-
-    /**
-     * Test that the site doesn't go in maintenance mode when unneeded.
-     */
-    public function test_block_site_if_hard_limit_exceeded_disable() {
-        global $CFG;
-        $file = "$CFG->dataroot/climaintenance.html";
-
-        $t = new quota_manager();
-        $this->assertEquals(false, file_exists($file));
-        $t->block_site_if_hard_limit_exceeded(8, 10);
-        $this->assertEquals(false, file_exists($file));
     }
 
     /**

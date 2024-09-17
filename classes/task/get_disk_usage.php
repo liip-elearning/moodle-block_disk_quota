@@ -28,21 +28,9 @@ class get_disk_usage extends scheduled_task {
 
     public function execute() {
         $settings = get_config('block_disk_quota');
-        $hardlimit = $settings->quota_gb + $settings->overage_limit_gb;
-        $warnlimit = $settings->quota_gb - $settings->warn_when_within_gb_of_limit;
         $manager = new quota_manager();
         $used = $manager->get_total_disk_space_used();
         $manager->record_space_used($used, $settings->quota_gb);
-        if ($settings->enabled) {
-            if ($manager->block_site_if_hard_limit_exceeded($used, $hardlimit)) {
-                $manager->notify_site_blocked($used, $settings);
-            } else if ($used >= $settings->quota_gb) {
-                $manager->notify_over_quota($used, $settings);
-            } else if ($used >= $warnlimit) {
-                $manager->notify_near_quota($used, $settings);
-            }
-        }
-
         $today = date('Y.m.d', time());
         if (!isset($settings->last_measurement_reduction) or $settings->last_measurement_reduction != $today) {
             $manager->reduce_old_measurements();
@@ -67,12 +55,8 @@ class get_disk_usage extends scheduled_task {
     }
 
     /*
-     * Don't allow less-than-every-hour runs.
+     * Don't allow less-than-every-day runs.
      */
-    public function get_hour() {
-        return '*';
-    }
-
     public function get_day() {
         return '*';
     }

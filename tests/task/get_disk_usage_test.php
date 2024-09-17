@@ -27,23 +27,16 @@ defined('MOODLE_INTERNAL') || die();
 
 class get_disk_usage_test extends advanced_testcase {
     protected function setUp() {
-        unset_config('noemailever');
-        set_config('enabled', 1, 'block_disk_quota');
-        set_config('overage_limit_gb', 2, 'block_disk_quota');
-        set_config('warn_when_within_gb_of_limit', 1, 'block_disk_quota');
         set_config('last_measurement_reduction', "1997.01.01", 'block_disk_quota');
         $this->resetAfterTest();
     }
 
     public function test_last_measurement_reduction() {
-        $sink = $this->redirectEmails();
-
         $t = new get_disk_usage();
         $t->execute();
 
         $date = new \DateTime();
         $today = $date->format("Y.m.d");
-        $this->assertCount(0, $sink->get_messages());
         $this->assertEquals($today, get_config("block_disk_quota", "last_measurement_reduction"));
     }
 }
