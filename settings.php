@@ -22,8 +22,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-use block_disk_quota\admin\admin_setting_email_list_custom;
-
 defined('MOODLE_INTERNAL') || die;
 
 require_once($CFG->libdir . '/adminlib.php');
@@ -36,85 +34,17 @@ if ($ADMIN->fulltree) {
     $activeusersstrings = array_map('strval', $activeusers);
     $activeuserschoices = array_combine($activeusersstrings, $activeusersstrings);
 
-    $settings->add(new admin_setting_configcheckbox(
-        'block_disk_quota/enabled',
-        get_string('enabled', 'block_disk_quota'),
-        get_string('enabled_desc', 'block_disk_quota'),
-        0));
-
     $settings->add(new admin_setting_configselect(
         'block_disk_quota/quota_gb',
         get_string('quota_gb', 'block_disk_quota'),
         get_string('quota_gb_desc', 'block_disk_quota'),
-        '50', $gbchoices));
-
-    $settings->add(new admin_setting_configselect(
-        'block_disk_quota/warn_when_within_gb_of_limit',
-        get_string('warn_when_within_gb_of_limit', 'block_disk_quota'),
-        get_string('warn_when_within_gb_of_limit_desc', 'block_disk_quota'),
-        '10', $gbchoices));
-
-    $settings->add(new admin_setting_configselect(
-        'block_disk_quota/overage_limit_gb',
-        get_string('overage_limit_gb', 'block_disk_quota'),
-        get_string('overage_limit_gb_desc', 'block_disk_quota'),
-        '20', $gbchoices));
-
-    $settings->add(new admin_setting_configcheckbox(
-        'block_disk_quota/do_email_admins',
-        get_string('do_email_admins', 'block_disk_quota'),
-        get_string('do_email_admins_desc', 'block_disk_quota'),
-        0));
-
-    $settings->add(new admin_setting_email_list_custom(
-        'block_disk_quota/email_others',
-        get_string('email_others', 'block_disk_quota'),
-        get_string('email_others_desc', 'block_disk_quota'),
-        '',
-        PARAM_EMAIL,
-        255));
-
-    $settings->add(new admin_setting_configduration(
-        'block_disk_quota/nearing_quota_warn_email_frequency',
-        get_string('nearing_quota_warn_email_frequency', 'block_disk_quota'),
-        get_string('nearing_quota_warn_email_frequency_desc', 'block_disk_quota'),
-        14 * 24 * 60 * 60
+       '50', $gbchoices
     ));
-
-    $settings->add(new admin_setting_configduration(
-        'block_disk_quota/over_quota_warn_email_frequency',
-        get_string('over_quota_warn_email_frequency', 'block_disk_quota'),
-        get_string('over_quota_warn_email_frequency_desc', 'block_disk_quota'),
-        3 * 24 * 60 * 60
-    ));
-
-    $settings->add(new admin_setting_configtext(
-        'block_disk_quota/support_telephone',
-        get_string('support_telephone', 'block_disk_quota'),
-        get_string('support_telephone_desc', 'block_disk_quota'),
-        '',
-        PARAM_TEXT,
-        255));
-
-    $settings->add(new admin_setting_configtext(
-        'block_disk_quota/support_email',
-        get_string('support_email', 'block_disk_quota'),
-        get_string('support_email_desc', 'block_disk_quota'),
-        '',
-        PARAM_TEXT,
-        255));
-
-    $settings->add(new admin_setting_configtext(
-        'block_disk_quota/heartbeat_email',
-        get_string('heartbeat_email', 'block_disk_quota'),
-        get_string('heartbeat_email_desc', 'block_disk_quota'),
-        '',
-        PARAM_TEXT,
-        255));
 
     $settings->add(new admin_setting_configselect(
         'block_disk_quota/quota_activeusers',
         get_string('quota_activeusers', 'block_disk_quota'),
         get_string('quota_activeusers_desc', 'block_disk_quota'),
-        '300', $activeuserschoices));
+        '300', $activeuserschoices
+    ));
 }
